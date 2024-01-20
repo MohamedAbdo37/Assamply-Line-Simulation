@@ -1,11 +1,11 @@
 <template>
     <div class="header">
-        <div style="display: flex;">
+        <div style="display: flex; justify-content: space-between;">
             <img src="../assets/logo.png">
-            <h3> Name</h3>
+            <h2> ProSim </h2>
         </div>
         <div>
-            <button @click="!this.sideBarToggle">
+            <button @click="toggleSideBar">
                 |||
             </button>
         </div>
@@ -27,7 +27,9 @@ export default{
         }
     },
     methods:{
-
+        toggleSideBar(){
+            this.sideBarToggle = !this.sideBarToggle
+        }
     }
 }
 </script>
@@ -38,6 +40,7 @@ export default{
     width:100%;
     justify-content: space-between;
     margin: 0px;
+    z-index: -1;
 }
 img{
     width: 50px;
