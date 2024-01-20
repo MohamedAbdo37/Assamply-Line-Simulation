@@ -65,7 +65,7 @@ export default{
 .sideBar{
     color: black;
     background-color: aliceblue;
-    /* height: 200px; */
+    height: 550px;
     width: 210px;
     position: absolute;
     /* transform: translate(1000%, 0%); */
@@ -73,7 +73,7 @@ export default{
     padding: 10px;
     text-align: start;
     left: 1300px;
-    margin-right: 10px;
+    margin: 10px;
     animation-name: slide;
     animation-duration: 1s;
 }

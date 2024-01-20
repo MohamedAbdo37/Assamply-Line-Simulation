@@ -52,7 +52,7 @@ button{
     color: white;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 25px;
+    border-radius: 10px;
     background-color: rgba(240, 248, 255, 0.285);
     border: none;
     outline: none;
