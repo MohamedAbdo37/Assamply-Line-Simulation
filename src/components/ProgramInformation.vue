@@ -26,7 +26,7 @@ export default{
 
 <style>
 .info{
-    background-color: rgba(126, 131, 135, 0.377);
+    background-color: rgba(91, 93, 96, 0.377);
     border-radius: 20px;
     margin: 10px;
     padding: 2px;
