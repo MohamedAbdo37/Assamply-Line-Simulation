@@ -5,7 +5,7 @@
             <div style="margin-left: 10px; "><h2> ProSim </h2></div>
         </div>
         <div>
-            <button @click="toggleSideBar" title="advansed options">
+            <button @click="toggleSideBar" title="advanced options">
                 <img src="../assets/menu.png">
             </button>
         </div>
