@@ -1,15 +1,24 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <ProgramHeader></ProgramHeader>
+  <ProgramCanvas></ProgramCanvas>
+  <ProgramControl></ProgramControl>
+  <ProgramInformation></ProgramInformation>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ProgramHeader from './components/ProgramHeader.vue'
+import ProgramCanvas from './components/ProgramCanvas.vue'
+import ProgramControl from './components/ProgramControl.vue'
+import ProgramInformation from './components/ProgramInformation.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    ProgramHeader,
+    ProgramCanvas,
+    ProgramControl,
+    ProgramInformation,
+    
   }
 }
 </script>
@@ -20,7 +29,11 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
+  color: white;
+}
+body{
+  background-image: url("./assets/background.jpg");
+
 }
 </style>
