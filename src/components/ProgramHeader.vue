@@ -5,7 +5,7 @@
             <div style="margin-left: 10px; "><h2> ProSim </h2></div>
         </div>
         <div>
-            <button @click="toggleSideBar">
+            <button @click="toggleSideBar" title="advansed options">
                 <img src="../assets/menu.png">
             </button>
         </div>
@@ -64,5 +64,8 @@ button{
 button:hover{
     background-color: rgb(92, 173, 244);
 
+}
+button:active{
+    background-color: rgb(47, 152, 245);
 }
 </style>
