@@ -1,10 +1,10 @@
 <template>
     <div class="controlBar">
-        <button>></button>
-        <button>||</button>
-        <button>Stop Input</button>
-        <button>Replay</button>
-        <button>Clear</button>
+        <button><img src="../assets/play.png"></button>
+        <button><img src="../assets/pause.png"></button>
+        <button><img src="../assets/stop.png"></button>
+        <button><img src="../assets/reload.png"></button>
+        <button><img src="../assets/bin.png"></button>
         <button>+M</button>
         <button>+Q</button>
     </div>
@@ -50,5 +50,10 @@ button{
 button:hover{
     background-color: rgb(92, 173, 244);
 
+}
+
+img{
+    width: 20px;
+    height: 20px;
 }
 </style>

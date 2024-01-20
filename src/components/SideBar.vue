@@ -65,7 +65,7 @@ export default{
 .sideBar{
     color: black;
     background-color: aliceblue;
-    height: 550px;
+    height: 560px;
     width: 210px;
     position: absolute;
     /* transform: translate(1000%, 0%); */
