@@ -20,6 +20,28 @@ export default {
 </script>
 
 <style>
+::-webkit-scrollbar {
+    width: 5px;
+    height: 0px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #170404;
+    border-radius: 2.5px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(205, 228, 255);
+    
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(77, 143, 241);
+    
+  }
 #app {
   font-family: Avenir;
   -webkit-font-smoothing: antialiased;
