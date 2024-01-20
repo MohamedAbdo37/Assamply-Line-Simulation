@@ -3,6 +3,7 @@
         <button>></button>
         <button>||</button>
         <button>Stop Input</button>
+        <button>Replay</button>
         <button>Clear</button>
         <button>+M</button>
         <button>+Q</button>
