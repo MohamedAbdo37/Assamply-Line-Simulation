@@ -5,12 +5,12 @@
             <h3> Name</h3>
         </div>
         <div>
-            <button>
+            <button @click="!this.sideBarToggle">
                 |||
             </button>
         </div>
-        <SideBar v-if="sideBarToggle"></SideBar>
     </div>
+    <SideBar v-show="this.sideBarToggle"></SideBar>
 </template>
 
 <script>
@@ -37,7 +37,6 @@ export default{
     display: flex;
     width:100%;
     justify-content: space-between;
-   
     margin: 0px;
 }
 img{

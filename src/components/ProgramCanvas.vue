@@ -20,7 +20,7 @@ export default{
 
 <style>
 .canvas{
-    background-color: rgba(198, 217, 217, 0.432); 
+    background-color: rgb(193, 208, 208); 
     border-radius: 20px; 
     height: 400px; 
     margin: 10px;

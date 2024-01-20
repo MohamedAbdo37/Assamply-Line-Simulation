@@ -1,6 +1,9 @@
 <template>
-    <div>
-        
+    <div class="sideBar">
+        <Label>M color</Label>
+        <input type="color">
+        <Label>Q color</Label>
+        <input type="color">
     </div>
 </template>
 
@@ -19,5 +22,9 @@ export default{
 </script>
 
 <style>
-
+.sideBar{
+    background-color: aliceblue;
+    height: 200px;
+    width: 80px;
+}
 </style>
