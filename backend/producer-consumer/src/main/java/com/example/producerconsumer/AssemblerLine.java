@@ -4,25 +4,54 @@ import java.util.ArrayList;
 
 public class AssemblerLine {
 
-    private ArrayList<Integer> Ms=new ArrayList<>();
-    private ArrayList<Integer> Qs=new ArrayList<>();
+    private ArrayList<Machine> Ms = new ArrayList<>();
+    private ArrayList<Queue> Qs=new ArrayList<>();
 
 
-    public void setMs(ArrayList<Integer> m) {
+    public void setMs(ArrayList<Machine> m) {
        this.Ms = m;
     }
 
-    public ArrayList<Integer> getMs() {
+    public ArrayList<Machine> getMs() {
         return Ms;
     }
 
-    public ArrayList<Integer> getQs() {
+    public ArrayList<Queue> getQs() {
         return Qs;
     }
 
-    public void setQs(ArrayList<Integer> q) {
+    public void setQs(ArrayList<Queue> q) {
         this.Qs = q;
     }
 
 
+    public void connectMQ(String machineId, String queueId) {
+        Machine m = Ms.stream()
+                .filter(machine -> machineId.equals(machine.getName()))
+                .findAny()
+                .orElse(null);
+        Queue q = Qs.stream()
+                .filter(queue -> queueId.equals(queue.getName()))
+                .findAny()
+                .orElse(null);
+
+        if (m != null) {
+            m.setPostQueue(q);
+        }
+    }
+
+    public void connectQM(String machineId, String queueId) {
+        Machine m = Ms.stream()
+                .filter(machine -> machineId.equals(machine.getName()))
+                .findAny()
+                .orElse(null);
+        Queue q = Qs.stream()
+                .filter(queue -> queueId.equals(queue.getName()))
+                .findAny()
+                .orElse(null);
+
+        if (m != null) {
+            m.setPreQueues(q);
+        }
+    }
 }
