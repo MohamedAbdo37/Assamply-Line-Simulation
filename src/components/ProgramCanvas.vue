@@ -1,23 +1,20 @@
 <template>
     <div class="canvas">
         <v-stage id="stage" ref="stage" :config="stageSize" @mousedown="handleStageMouseDown"
-            @touchstart="handleStageMouseDown" >
+            @touchstart="handleStageMouseDown">
             <v-layer>
-                <v-group v-for="item in queues" :key="item.id" :config="item" @transformend="handleTransformEnd"
-                    @dragend="handleTransformEnd" >
+                <v-group v-for="item in queues" :key="item.id" :config="item" >
                     <v-rect :config="item.body" />
                     <v-text :config="item.text" />
                     <v-text :config="item.queue" />
                 </v-group>
 
-                <v-group v-for="item in machines" :key="item.id" :config="item" @transformend="handleTransformEnd"
-                    @dragend="handleTransformEnd">
-                    <v-circle :config="item.body"/>
+                <v-group v-for="item in machines" :key="item.id" :config="item" >
+                    <v-circle :config="item.body" />
                     <v-text :config="item.text" />
                 </v-group>
 
-                <v-arrow v-for="item in relations" :key="item.id" :config="item" @transformend="handleTransformEnd"
-                    @dragend="handleTransformEnd" />
+                <v-arrow v-for="item in relations" :key="item.id" :config="item" />
             </v-layer>
         </v-stage>
     </div>
@@ -36,41 +33,137 @@ export default {
             queues: [],
             relations: [],
             localMousePos: { x: undefined, y: undefined },
+            selectedShapeID: "",
         }
     },
-    props:['machine', 'queue', 'mColor', 'qColor', 'clear'],
+    props: ['machine', 'queue', 'mColor', 'qColor', 'clear', 'relation'],
     watch: {
         machine() {
             this.createM(this.machine);
         }
-        , queue() {
+        ,queue() {
             this.createQ(this.queue);
         },
-        mColor(){
-            for (let i = 0; i < this.machines.length; i++){
+        mColor() {
+            for (let i = 0; i < this.machines.length; i++) {
                 this.machines[i].body.fill = this.mColor
             }
         },
-        qColor(){
-            for (let i = 0; i < this.queues.length; i++){
+        qColor() {
+            for (let i = 0; i < this.queues.length; i++) {
                 this.queues[i].body.fill = this.qColor
             }
         },
-        clear(){
-            if (this.clear){
+        clear() {
+            if (this.clear) {
                 this.queues = []
                 this.machines = []
                 this.createQ(this.queue);
             }
+        },
+        relation() {
+            if (this.relation === false) return;
+            let n = 0
+            const R = this.createR(0);
+            document.querySelector(".canvas").addEventListener("click", () => {
+                if(n === 1){
+                    this.relations.push(R);
+                    document.querySelector(".canvas").removeEventListener("click", console.log("End"));
+                }
+                n++;
+                console.log(this.localMousePos);
+                R.points.push(this.localMousePos.x - R.x);
+                R.points.push(this.localMousePos.y - R.y);
+                console.log(R.points);
+                console.log(R);
+            })
+            // document.querySelector(".canvas").addEventListener("dblclick", () => {
+            //     let R = undefined;
+            //     if (n !== 0) R = this.relations.pop();
+            //     else {
+            //         document.querySelector(".canvas").removeEventListener("click", console.log("no target"));
+            //         document.querySelector(".canvas").removeEventListener("dblclick", console.log("End"));
+            //     }
+            //     n++;
+            //     console.log(this.localMousePos);
+            //     console.log(R.points);
+            //     console.log(R);
+            //     this.relations.push(R);
+            //     document.querySelector(".canvas").removeEventListener("click", console.log("target"));
+            //     document.querySelector(".canvas").removeEventListener("dblclick", console.log("End"));
+            // })
+
         }
     },
     methods: {
-        handleStageMouseDown() {
+        handleStageMouseDown(e) {
+            // clicked on transformer - do nothing
+            if (e.target.getParent() === null) {
+                this.selectedShapeID = '';
+                // this.updateTransformer();
+                return;
+            }
+            const clickedOnTransformer =
+                e.target.getParent().className === 'Transformer';
+            if (clickedOnTransformer) {
+                return;
+            }
 
-        },
-        handleTransformEnd() {
+            // find clicked rect by its name
+            const name = e.target.name();
+            const m = this.machines.find((r) => r.name === name);
+            const q = this.queues.find((r) => r.name === name);
 
+            if (m) {
+                this.selectedShapeID = name;
+            } else if (q) {
+                this.selectedShapeID = name;
+            }
+            console.log(this.selectedShapeID)
+            // this.updateTransformer();
         },
+        handleTransformEnd(e) {
+            // shape is transformed, let us save new attrs back to the node
+            // find element in our state
+            const m = this.machines.find(
+                (r) => r.name === this.selectedShapeID
+            );
+            const q = this.queus.find(
+                (r) => r.name === this.selectedShapeID
+            );
+
+            var shape;
+
+            if (m)
+                shape = m
+            else if (q)
+                shape = q
+
+            console.log(`from transformer ${shape}`)
+            // update the state
+            shape.x = e.target.x();
+            shape.y = e.target.y();
+        },
+        // updateTransformer() {
+        //     // here we need to manually attach or detach Transformer node
+        //     const transformerNode = this.$refs.transformer.getNode();
+        //     const stage = transformerNode.getStage();
+        //     const { selectedShapeID } = this;
+
+        //     const selectedNode = stage.findOne('.' + selectedShapeID);
+        //     // do nothing if selected node is already attached
+        //     if (selectedNode === transformerNode.node()) {
+        //         return;
+        //     }
+
+        //     if (selectedNode) {
+        //         // attach to another node
+        //         transformerNode.nodes([selectedNode]);
+        //     } else {
+        //         // remove transformer
+        //         transformerNode.nodes([]);
+        //     }
+        // },
         setStageSize() {
             this.stageSize.height = document.querySelector(".canvas").offsetHeight;
             this.stageSize.width = document.querySelector(".canvas").offsetWidth;
@@ -153,16 +246,13 @@ export default {
                 name: r,
                 x: this.localMousePos.x,
                 y: this.localMousePos.y,
-                from:undefined,
+                from: undefined,
                 to: undefined,
-                points: [0, 0, 0 , 0],
-                pointerLength: 10,
-                pointerWidth: 10,
+                points: [],
                 fill: 'black',
                 stroke: 'black',
                 strokeWidth: 2,
             }
-            this.relations.push(relation);
             return relation;
         },
         flash(name) {
@@ -176,51 +266,51 @@ export default {
                 }
             })
         },
-        changeMC(name, color){
-            for (let i=0; i < this.machines.length; i++){
-                if (this.machines[i].name == name){
+        changeMC(name, color) {
+            for (let i = 0; i < this.machines.length; i++) {
+                if (this.machines[i].name == name) {
                     this.machines[i].body.fill = color
                 }
             }
         },
-        changeQC(name, color){
-            for (let i=0; i < this.machines.length; i++){
-                if (this.queues[i].name == name){
-                    this.queues[i].body.fill = color
-                }
-            }
-        },
-        inMachine(name){
-            for (let i=0; i < this.machines.length; i++){
-                if (this.machines[i].name == name){
-                    let temp = Number(this.machines[i].queue.text)
-                    ++temp
-                    this.machines[i].queue.text = temp
-                }
-            }
-        },
-        deMachine(name){
-            for (let i=0; i < this.machines.length; i++){
-                if (this.machines[i].name == name){
-                    let temp = Number(this.machines[i].queue.text)
-                    --temp
-                    this.machines[i].queue.text = temp
-                }
-            }
-        },
-        inQueue(name){
-            for (let i=0; i < this.queues.length; i++){
-                if (this.queues[i].name == name){
+        // changeQC(name, color){
+        //     for (let i=0; i < this.machines.length; i++){
+        //         if (this.queues[i].name == name){
+        //             this.queues[i].body.fill = color
+        //         }
+        //     }
+        // },
+        // inMachine(name){
+        //     for (let i=0; i < this.machines.length; i++){
+        //         if (this.machines[i].name == name){
+        //             let temp = Number(this.machines[i].queue.text)
+        //             ++temp
+        //             this.machines[i].queue.text = temp
+        //         }
+        //     }
+        // },
+        // deMachine(name){
+        //     for (let i=0; i < this.machines.length; i++){
+        //         if (this.machines[i].name == name){
+        //             let temp = Number(this.machines[i].queue.text)
+        //             --temp
+        //             this.machines[i].queue.text = temp
+        //         }
+        //     }
+        // },
+        inQueue(name) {
+            for (let i = 0; i < this.queues.length; i++) {
+                if (this.queues[i].name == name) {
                     let temp = Number(this.queues[i].queue.text)
                     ++temp
-                    
+
                     this.queues[i].queue.text = temp
                 }
             }
         },
-        deQueue(name){
-            for (let i=0; i < this.queues.length; i++){
-                if (this.queues[i].name == name){
+        deQueue(name) {
+            for (let i = 0; i < this.queues.length; i++) {
+                if (this.queues[i].name == name) {
                     let temp = Number(this.queues[i].queue.text)
                     --temp
                     this.queues[i].queue.text = temp
@@ -232,7 +322,7 @@ export default {
         window.onresize = () => {
             this.setStageSize();
         }
-
+        // const canvas = document.querySelector(".canvas")
         window.addEventListener('mousemove', (event) => {
             const localX = event.clientX - event.target.offsetLeft;
             const localY = event.clientY - event.target.offsetTop;

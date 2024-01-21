@@ -7,6 +7,7 @@
         <button title="clear system" @click="clear"><img src="../assets/bin.png" alt="clear"></button>
         <button title="add a machine" @click="addM"><img src="../assets/add.png" alt="add machine">Machine</button>
         <button title="add a queue" @click="addQ"><img src="../assets/add.png" alt="add queue">Queue</button>
+        <button title="create a Line" @click="addR"><img src="../assets/add.png" alt="create Line">Line</button>
     </div>
 </template>
 
@@ -25,18 +26,26 @@ export default{
             ++this.machine
             this.$emit('mChange', this.machine);
             this.$emit('clear', false);
+            this.$emit('addR', FontFaceSetLoadEvent);
         },
         addQ(){
             ++this.queue
             this.$emit('qChange', this.queue);
             this.$emit('clear', false);
+            this.$emit('addR', false);
         },
-        clear(){
+        addR(){
+            ++this.queue
+            this.$emit('addR', true);
+            this.$emit('clear', false);
+        },clear(){
             this.machine = -1
             this.queue = 0
             this.$emit('mChange', this.machine);
             this.$emit('qChange', this.queue);
+            this.$emit('addR', false);
             this.$emit('clear', true);
+            
         }
     }
 }
