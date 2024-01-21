@@ -17,7 +17,6 @@
 // const height = document.querySelector(".canvas").height;
 export default {
     name: 'ProgramCanvas',
-    components: {ProgramControl},
     data() {
         return {
             // stageSize: {
