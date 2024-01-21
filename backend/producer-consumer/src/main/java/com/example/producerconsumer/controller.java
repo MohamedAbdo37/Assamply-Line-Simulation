@@ -13,22 +13,26 @@ public class controller {
     private ArrayList<Queue> Qs = new ArrayList<>();
     private CareTaker careTaker= new CareTaker();
     @GetMapping("/AddMs")
-    public void addMs(@RequestParam String machineId){
-        Ms.add(new Machine(machineId));
+    public Machine addMs(@RequestParam String machineId){
+        Machine machine = new Machine(machineId);
+        Ms.add(machine);
         //Qs.add(2);
         ass.setMs(Ms);
         ass.setQs(Qs);
         careTaker.Addline(ass);
+        return machine;
       //  careTaker.undo(0);
       //  System.out.println(careTaker.Generatee.getAssembler().getMs());
     }
 
     @GetMapping("/AddQs")
-    public void addQs(@RequestParam String queueId) {
-        Qs.add(new Queue(queueId));
+    public Queue addQs(@RequestParam String queueId) {
+        Queue queue = new Queue(queueId);
+        Qs.add(queue);
         ass.setMs(Ms);
         ass.setQs(Qs);
         careTaker.Addline(ass);
+        return queue;
     }
 
 
