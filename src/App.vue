@@ -2,7 +2,7 @@
   <div>
     <ProgramHeader></ProgramHeader>
     <ProgramCanvas :machine=Ms :queue=Qs></ProgramCanvas>
-    <ProgramControl :machine=Ms :queue=Qs></ProgramControl>
+    <ProgramControl :m=Ms :q=Qs @mChange="this.Ms = $event" @qChange="this.Qs = $event"></ProgramControl>
     <ProgramInformation></ProgramInformation>
   </div>
 </template>

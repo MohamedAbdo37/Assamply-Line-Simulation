@@ -13,22 +13,27 @@
 <script>
 export default{
     name: 'ProgramControl',
-    props: ['machine', 'queue'],
+    props: ['m', 'q'],
     data(){
         return{
-
+            machine: this.m,
+            queue: this.q
         }
     },
     methods:{
         addM(){
             ++this.machine
+            this.$emit('mChange', this.machine);
         },
         addQ(){
             ++this.queue
+            this.$emit('qChange', this.queue);
         },
         clear(){
             this.machine = -1
             this.queue = 0
+            this.$emit('mChange', this.machine);
+            this.$emit('qChange', this.queue);
         }
     }
 }

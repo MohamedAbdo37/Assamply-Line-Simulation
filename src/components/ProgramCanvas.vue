@@ -38,21 +38,11 @@ export default {
             machineBodies: [
             ],
             queues: [
-                {
-                    name: "Q0",
-                    x: 20,
-                    y: 50,
-                    width: 100,
-                    height: 100,
-                    fill: 'red',
-                    shadowBlur: 10,
-                    draggable: true
-                }
-            ],
-            machine: undefined,
-            queue: undefined,
-            machines: [],
-            queues: [],
+            ]
+            // machine: undefined,
+            // queue: undefined,
+            // machines: [],
+            // queues: [],
         }
     },
     props:['machine', 'queue'],
