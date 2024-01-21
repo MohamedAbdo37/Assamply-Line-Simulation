@@ -46,4 +46,9 @@ public class Controller {
         else
             ass.connectMQ(from, to);
     }
+
+    @GetMapping
+    public void play(@RequestParam String initialQueue) {
+        ass.startLine(initialQueue);
+    }
 }
