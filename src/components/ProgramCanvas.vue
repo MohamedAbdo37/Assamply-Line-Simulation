@@ -34,6 +34,7 @@ export default {
             relations: [],
             localMousePos: { x: undefined, y: undefined },
             selectedShapeID: "",
+            n: 0
         }
     },
     props: ['machine', 'queue', 'mColor', 'qColor', 'clear', 'relation'],
@@ -62,21 +63,31 @@ export default {
             }
         },
         relation() {
-            if (this.relation === false) return;
-            let n = 0
-            const R = this.createR(0);
-            document.querySelector(".canvas").addEventListener("click", () => {
-                if(n === 1){
-                    this.relations.push(R);
-                    document.querySelector(".canvas").removeEventListener("click", console.log("End"));
-                }
-                n++;
-                console.log(this.localMousePos);
-                R.points.push(this.localMousePos.x - R.x);
-                R.points.push(this.localMousePos.y - R.y);
-                console.log(R.points);
-                console.log(R);
-            })
+            if (this.relation == true){
+                console.log("jjhkjh" + this.relation)
+                var R = this.createR(0);
+
+                document.querySelector(".canvas").addEventListener("click", () => {
+                    
+                    ++this.n;
+                    console.log(this.localMousePos);
+                    R.points.push(this.localMousePos.x - R.x);
+                    R.points.push(this.localMousePos.y - R.y);
+                    console.log(R.points);
+                    console.log(R);
+                    if(this.n == 2){
+                        this.$emit('lineDone', false)
+                        this.n=0
+                        console.log("first line in if ")
+                        this.relations.push(R)
+                        this.d()
+                    }
+                    console.log("last line in add listener")
+                })
+            }
+
+            
+
             // document.querySelector(".canvas").addEventListener("dblclick", () => {
             //     let R = undefined;
             //     if (n !== 0) R = this.relations.pop();
@@ -96,6 +107,9 @@ export default {
         }
     },
     methods: {
+        d(){
+            document.querySelector(".canvas").removeEventListener("click", console.log("End"));
+        },
         handleStageMouseDown(e) {
             // clicked on transformer - do nothing
             if (e.target.getParent() === null) {

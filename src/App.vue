@@ -1,7 +1,7 @@
 <template>
   <div>
     <ProgramHeader @mColor="this.mColor = $event" @qColor="this.qColor = $event"></ProgramHeader>
-    <ProgramCanvas :machine=Ms :queue=Qs :mColor=mColor :qColor=qColor :clear=clear :relation=createR></ProgramCanvas>
+    <ProgramCanvas :machine=Ms :queue=Qs :mColor=mColor :qColor=qColor :clear=clear :relation=createR @lineDone="this.createR = $event"></ProgramCanvas>
     <ProgramControl :m=Ms :q=Qs @mChange="this.Ms = $event" @qChange="this.Qs = $event" @clear="this.clear = $event"
       @addR="this.createR = $event"></ProgramControl>
     <ProgramInformation></ProgramInformation>
