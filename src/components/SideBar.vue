@@ -2,11 +2,11 @@
     <div class="sideBar">
         <div class="options">
             <label for="machine">Machine color:</label>
-            <input type="color" name="machine" id="machine" value="#089DDD">
+            <input type="color" name="machine" id="machine" value="#089DDD" v-model="this.machineColor">
         </div>
         <div class="options">
             <Label for="queue">Queue color </Label>
-            <input type="color" name="queue" value="#ddaf08">
+            <input type="color" name="queue" value="#ddaf08" v-model="this.queueColor">
         </div>
         <div class="options">
             <h3>Stop After:</h3>
@@ -56,6 +56,14 @@ export default {
             inputCri: "random",
             queueColor:"#ddaf08",
             machineColor: "#089DDD",
+        }
+    },
+    watch:{
+        queueColor(){
+            this.$emit('qColor', this.queueColor);
+        },
+        machineColor(){
+            this.$emit('mColor', this.machineColor);
         }
     },
     methods: {

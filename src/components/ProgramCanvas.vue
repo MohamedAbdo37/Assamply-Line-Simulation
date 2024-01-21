@@ -35,7 +35,7 @@ export default {
             queues: [],
         }
     },
-    props:['machine', 'queue'],
+    props:['machine', 'queue', 'mColor', 'qColor'],
     watch: {
         machine() {
             this.createM(this.machine);
@@ -72,7 +72,7 @@ export default {
                 radius: 25,
                 x: 20,
                 y: 50,
-                fill: 'green'
+                fill: this.mColor
             }
 
             const group = {
@@ -112,7 +112,7 @@ export default {
                 y: 50,
                 width: 100,
                 height: 50,
-                fill: 'red',
+                fill: this.qColor,
                 shadowBlur: 10
             }
 

@@ -10,7 +10,7 @@
             </button>
         </div>
     </div>
-    <SideBar v-show="this.sideBarToggle"></SideBar>
+    <SideBar v-show="this.sideBarToggle" @mColor="this.mColor = $event" @qColor="this.qColor = $event"></SideBar>
 </template>
 
 <script>
@@ -23,7 +23,17 @@ export default{
     },
     data(){
         return{
-            sideBarToggle: false
+            sideBarToggle: false,
+            mColor: "#089DDD",
+            qColor: "#ddaf08"
+        }
+    },
+    watch:{
+        qColor(){
+            this.$emit('qColor', this.qColor);
+        },
+        mColor(){
+            this.$emit('mColor', this.mColor);
         }
     },
     methods:{
