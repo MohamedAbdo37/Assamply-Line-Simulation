@@ -5,15 +5,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-@CrossOrigin
-public class controller {
+@CrossOrigin("http://localhost:8080")
+public class Controller {
 
     private ArrayList<Machine> Ms = new ArrayList<>();
     AssemblerLine ass = new AssemblerLine();
     private ArrayList<Queue> Qs = new ArrayList<>();
-    private CareTaker careTaker= new CareTaker();
+    private CareTaker careTaker = new CareTaker();
+
     @GetMapping("/AddMs")
-    public void addMs(@RequestParam String machineId){
+    public void addMs(@RequestParam String machineId) {
         Ms.add(new Machine(machineId, ass));
         ass.setMs(Ms);
         ass.setQs(Qs);
@@ -22,17 +23,16 @@ public class controller {
 
     @GetMapping("/AddQs")
     public void addQs(@RequestParam String queueId) {
-        Qs.add(new Queue(queueId,ass));
+        Qs.add(new Queue(queueId, ass));
         ass.setMs(Ms);
         ass.setQs(Qs);
         careTaker.Addline(ass);
     }
 
-
     @GetMapping("/replay")
-    public ArrayList<AssemblerLine> replay(){
+    public ArrayList<AssemblerLine> replay() {
         ArrayList<AssemblerLine> lines = new ArrayList<>();
-        for(int i=0; i < careTaker.GetSize();i++){
+        for (int i = 0; i < careTaker.GetSize(); i++) {
             careTaker.undo(i);
             lines.add(careTaker.Generatee.getAssembler());
         }
