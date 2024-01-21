@@ -26,7 +26,7 @@ export default{
             ++this.machine
             this.$emit('mChange', this.machine);
             this.$emit('clear', false);
-            this.$emit('addR', FontFaceSetLoadEvent);
+            // this.$emit('addR', FontFaceSetLoadEvent);
         },
         addQ(){
             ++this.queue
@@ -35,7 +35,6 @@ export default{
             this.$emit('addR', false);
         },
         addR(){
-            ++this.queue
             this.$emit('addR', true);
             this.$emit('clear', false);
         },clear(){
