@@ -6,8 +6,17 @@ public class AssemblerLine {
 
     private ArrayList<Machine> Ms = new ArrayList<>();
     private ArrayList<Queue> Qs=new ArrayList<>();
+    private boolean Change = false;
 
-
+    public void flipChange(){
+        this.Change = !this.Change;
+    }
+    public void setChange(boolean change){
+        this.Change = change;
+    }
+    public boolean getChange(){
+        return this.Change;
+    }
     public void setMs(ArrayList<Machine> m) {
        this.Ms = m;
     }

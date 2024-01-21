@@ -6,7 +6,7 @@ public class Machine {
     private String name;
     private Queue postQueue;
     private List<Queue> preQueues;
-
+    private Manager manager;
     private long serviceTime;
 
     private Thread consumerThread;
@@ -15,6 +15,8 @@ public class Machine {
     public Machine(String name) {
         this.name = name;
         this.serviceTime = (int) (randomgenerate() * 1000);
+        this.manager = Manager.getInstance();
+        manager.addObserver(this.name, new MachineObserver(this.name));
     }
 
     public void setPostQueue(Queue postQueue) {

@@ -15,12 +15,9 @@ public class controller {
     @GetMapping("/AddMs")
     public void addMs(@RequestParam String machineId){
         Ms.add(new Machine(machineId));
-        //Qs.add(2);
         ass.setMs(Ms);
         ass.setQs(Qs);
         careTaker.Addline(ass);
-      //  careTaker.undo(0);
-      //  System.out.println(careTaker.Generatee.getAssembler().getMs());
     }
 
     @GetMapping("/AddQs")
