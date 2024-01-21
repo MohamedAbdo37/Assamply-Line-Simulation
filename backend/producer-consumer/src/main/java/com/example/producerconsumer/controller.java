@@ -14,7 +14,7 @@ public class controller {
     private CareTaker careTaker= new CareTaker();
     @GetMapping("/AddMs")
     public void addMs(@RequestParam String machineId){
-        Ms.add(new Machine(machineId));
+        Ms.add(new Machine(machineId,ass));
         ass.setMs(Ms);
         ass.setQs(Qs);
         careTaker.Addline(ass);
@@ -22,7 +22,7 @@ public class controller {
 
     @GetMapping("/AddQs")
     public void addQs(@RequestParam String queueId) {
-        Qs.add(new Queue(queueId));
+        Qs.add(new Queue(queueId,ass));
         ass.setMs(Ms);
         ass.setQs(Qs);
         careTaker.Addline(ass);

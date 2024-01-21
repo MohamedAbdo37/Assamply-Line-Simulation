@@ -5,5 +5,5 @@ public class QueueObserver implements IObserver{
     public void update(AssemblerLine assemblerLine) {
         assemblerLine.setChange(true);
     }
-    
+
 }

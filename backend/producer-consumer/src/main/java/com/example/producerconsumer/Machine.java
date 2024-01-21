@@ -3,6 +3,7 @@ package com.example.producerconsumer;
 import java.util.List;
 
 public class Machine {
+    private AssemblerLine assemblerLine;
     private String name;
     private Queue postQueue;
     private List<Queue> preQueues;
@@ -12,11 +13,15 @@ public class Machine {
     private Thread consumerThread;
     private Thread producerThread;
 
-    public Machine(String name) {
+    public Machine(String name,AssemblerLine ass) {
+        this.assemblerLine=ass;
         this.name = name;
         this.serviceTime = (int) (randomgenerate() * 1000);
         this.manager = Manager.getInstance();
         manager.addObserver(this.name, new MachineObserver(this.name));
+    }
+    private AssemblerLine getAssemblerLine(){
+        return this.assemblerLine;
     }
 
     public void setPostQueue(Queue postQueue) {

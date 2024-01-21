@@ -4,15 +4,19 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 public class Queue {
-
+    private AssemblerLine assemblerLine;
     private String name;
     private Manager manager;
     private List<Item> queue;
 
-    public Queue(String name) {
+    public Queue(String name,AssemblerLine ass) {
         this.name = name;
+        this.assemblerLine=ass;
         this.manager = Manager.getInstance();
         this.manager.addObserver(this.name, new QueueObserver());
+    }
+    private AssemblerLine getAssemblerLine(){
+        return this.assemblerLine;
     }
 
     public String getName() {
