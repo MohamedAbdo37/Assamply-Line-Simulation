@@ -296,25 +296,6 @@ export default {
             const localY = event.clientY - 80;
             this.localMousePos = { x: localX, y: localY };
         });
-
-        // if (this.line) {
-        //     let n = 0;
-        //     let R = this.createR(1);
-        //     document.querySelector(".canvas").addEventListener("click", () => {
-        //         if (n === 1) {
-        //             this.relations.push(R);
-        //             this.createR(0);
-        //         }
-        //         n = n + 1;
-        //         console.log(this.localMousePos);
-        //         if (R) {
-        //             R.points.push(this.localMousePos.x - R.x);
-        //             R.points.push(this.localMousePos.y - R.y);
-        //         }
-        //         console.log(R.points);
-        //         console.log(R);
-        //     })
-        // }
     },
     mounted() {
         this.setStageSize();
