@@ -4,22 +4,32 @@
         <button title="pause the operation"><img src="../assets/pause.png" alt="pause operation"></button>
         <button title="stop sending inputs"><img src="../assets/stop.png" alt="stop input"></button>
         <button title="repeat the operation"><img src="../assets/reload.png" alt="repeat operation"></button>
-        <button title="clear system"><img src="../assets/bin.png" alt="clear"></button>
-        <button title="add a machine"><img src="../assets/add.png" alt="add machine">Machine</button>
-        <button title="add a queue"><img src="../assets/add.png" alt="add queue">Queue</button>
+        <button title="clear system" @click="clear"><img src="../assets/bin.png" alt="clear"></button>
+        <button title="add a machine" @click="addM"><img src="../assets/add.png" alt="add machine">Machine</button>
+        <button title="add a queue" @click="addQ"><img src="../assets/add.png" alt="add queue">Queue</button>
     </div>
 </template>
 
 <script>
 export default{
     name: 'ProgramControl',
+    props: ['machine', 'queue'],
     data(){
         return{
 
         }
     },
     methods:{
-        
+        addM(){
+            ++this.machine
+        },
+        addQ(){
+            ++this.queue
+        },
+        clear(){
+            this.machine = -1
+            this.queue = 0
+        }
     }
 }
 </script>

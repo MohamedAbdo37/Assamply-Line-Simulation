@@ -1,8 +1,8 @@
 <template>
   <div>
     <ProgramHeader></ProgramHeader>
-    <ProgramCanvas :machine="Ms" :queue="Qs"></ProgramCanvas>
-    <ProgramControl></ProgramControl>
+    <ProgramCanvas :machine=Ms :queue=Qs></ProgramCanvas>
+    <ProgramControl :machine=Ms :queue=Qs></ProgramControl>
     <ProgramInformation></ProgramInformation>
   </div>
 </template>

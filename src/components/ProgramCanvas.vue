@@ -26,8 +26,8 @@ export default {
                 width: 100,
                 height: 400,
             },
-            machine: undefined,
-            queue: undefined,
+            // machine: undefined,
+            // queue: undefined,
             machines: [
 
             ],
@@ -49,7 +49,7 @@ export default {
             ],
         }
     },
-    props:['m'],
+    props:['machine', 'queue'],
     watch: {
         machine(){
             this.createM(this.machine);
