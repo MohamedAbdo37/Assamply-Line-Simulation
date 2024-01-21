@@ -6,4 +6,8 @@ public class Item {
     public Item(String color) {
         this.color = color;
     }
+
+    public String getColor() {
+        return this.color;
+    }
 }

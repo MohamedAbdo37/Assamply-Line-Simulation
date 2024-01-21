@@ -3,6 +3,7 @@ package com.csed26.prosim;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:8080")
@@ -47,8 +48,18 @@ public class Controller {
             ass.connectMQ(from, to);
     }
 
-    @GetMapping
+    @GetMapping("/play")
     public void play(@RequestParam String initialQueue) {
         ass.startLine(initialQueue);
+    }
+
+    @GetMapping("/getMachineStatus")
+    public List<Machine> getMachineStatus() {
+        return ass.getMs();
+    }
+
+    @GetMapping("/getQueueStatus")
+    public List<Queue> getQueueStatus() {
+        return ass.getQs();
     }
 }

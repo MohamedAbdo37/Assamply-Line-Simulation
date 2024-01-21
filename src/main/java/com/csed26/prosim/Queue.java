@@ -10,8 +10,11 @@ public class Queue {
     private Manager manager;
     private List<Item> queue;
 
+    private int size;
+
     public Queue(String name,AssemblerLine ass) {
         this.name = name;
+        this.size = 0;
         queue = new ArrayList<>();
         this.assemblerLine=ass;
         this.manager = Manager.getInstance();
@@ -21,12 +24,19 @@ public class Queue {
         return this.assemblerLine;
     }
 
+
+    public int getSize() {
+        return this.size;
+    }
     public String getName() {
         return this.name;
     }
+
+
     public synchronized void enqueue(Item item , AssemblerLine assemblerLine) {
         synchronized (this) {
             queue.add(item);
+            this.size++;
             this.manager.notify(this.name, assemblerLine);
             this.notify();
         }
@@ -38,6 +48,7 @@ public class Queue {
             while(this.queue.size() == 0) this.wait();
             this.manager.notify(this.name, assemblerLine);
             Item item = queue.remove(0);
+            this.size--;
             return item;
         }
     }

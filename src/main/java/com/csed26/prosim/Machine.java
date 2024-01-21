@@ -13,7 +13,10 @@ public class Machine {
     private Thread consumerThread;
     private Thread producerThread;
 
+    private String color;
+
     private boolean lock = false;
+
 
     public Machine(String name, AssemblerLine ass) {
         this.assemblerLine = ass;
@@ -43,7 +46,15 @@ public class Machine {
     public long getServiceTime() {
         return serviceTime;
     }
-    public void setItem(Item item) {
+
+    public String getColor() {
+        if (item != null) {
+            return item.getColor();
+        }
+        else
+            return null;
+    }
+     public void setItem(Item item) {
         this.item = item;
     }
 
