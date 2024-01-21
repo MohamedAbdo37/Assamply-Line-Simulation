@@ -15,6 +15,9 @@
                     <v-circle :config="item.body" />
                     <v-text :config="item.text" />
                 </v-group>
+
+                <v-arrow v-for="item in relations" :key="item.id" :config="item" @transformend="handleTransformEnd"
+                    @dragend="handleTransformEnd" />
             </v-layer>
         </v-stage>
     </div>
@@ -29,18 +32,18 @@ export default {
                 width: 100,
                 height: 400,
             },
-            // machine: -1,
-            // queue: -1,
             machines: [],
             queues: [],
+            relations: [],
+            localMousePos: { x: undefined, y: undefined },
         }
     },
-    props:['machine', 'queue', 'mColor', 'qColor'],
+    props: ['machine', 'queue', 'mColor', 'qColor'],
     watch: {
         machine() {
             this.createM(this.machine);
         }
-        ,queue() {
+        , queue() {
             this.createQ(this.queue);
         }
     },
@@ -128,14 +131,31 @@ export default {
             }
             this.queues.push(group);
         },
-        flash(name){
-            this.machines.forEach(m =>{
-                if( m.name === name){
+        createR(r) {
+            const relation = {
+                name: r,
+                x: this.localMousePos.x,
+                y: this.localMousePos.y,
+                from:undefined,
+                to: undefined,
+                points: [0, 0, 0 , 0],
+                pointerLength: 10,
+                pointerWidth: 10,
+                fill: 'black',
+                stroke: 'black',
+                strokeWidth: 2,
+            }
+            this.relations.push(relation);
+            return relation;
+        },
+        flash(name) {
+            this.machines.forEach(m => {
+                if (m.name === name) {
                     m.body.fill = 'white';
                     setTimeout(() => {
                         m.body.fill = this.mColor;
                     }, 200);
-                    
+
                 }
             })
         }
@@ -144,6 +164,12 @@ export default {
         window.onresize = () => {
             this.setStageSize();
         }
+
+        window.addEventListener('mousemove', (event) => {
+            const localX = event.clientX - event.target.offsetLeft;
+            const localY = event.clientY - event.target.offsetTop;
+            this.localMousePos = { x: localX, y: localY };
+        });
     },
     mounted() {
         this.setStageSize();
