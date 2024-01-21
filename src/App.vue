@@ -30,7 +30,6 @@ export default {
     }
   },
   mounted() {
-    this.Qs++;
   },
 }
 </script>
