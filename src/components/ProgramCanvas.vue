@@ -3,16 +3,17 @@
         <v-stage id="stage" ref="stage" :config="stageSize" @mousedown="handleStageMouseDown"
             @touchstart="handleStageMouseDown">
             <v-layer>
-                <v-group v-for="item in machines" :key="item.id" :config="item" @transformend="handleTransformEnd"
-                    @dragend="handleTransformEnd">
-                    <v-circle :config="item.body" />
-                    <v-text :config="item.text" />
-                </v-group>
                 <v-group v-for="item in queues" :key="item.id" :config="item" @transformend="handleTransformEnd"
                     @dragend="handleTransformEnd">
                     <v-rect :config="item.body" />
                     <v-text :config="item.text" />
                     <v-text :config="item.queue" />
+                </v-group>
+                
+                <v-group v-for="item in machines" :key="item.id" :config="item" @transformend="handleTransformEnd"
+                    @dragend="handleTransformEnd">
+                    <v-circle :config="item.body" />
+                    <v-text :config="item.text" />
                 </v-group>
             </v-layer>
         </v-stage>
@@ -88,7 +89,7 @@ export default {
                 name: qName,
                 text: qName,
                 fontSize: 19,
-                x: 60,
+                x: 55,
                 y: 56,
                 fill: "white"
             }
@@ -143,7 +144,6 @@ export default {
     },
     mounted() {
         this.setStageSize();
-        this.createM(this.machine);
         this.createQ(this.queue);
     },
 }

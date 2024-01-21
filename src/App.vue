@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       Ms: -1,
-      Qs: -1,
+      Qs: 0,
     }
   },
   mounted() {
