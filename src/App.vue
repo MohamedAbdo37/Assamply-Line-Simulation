@@ -1,12 +1,14 @@
 <template>
   <ProgramHeader></ProgramHeader>
   <ProgramCanvas></ProgramCanvas>
+  <ProgramControl></ProgramControl>
   <ProgramInformation></ProgramInformation>
 </template>
 
 <script>
 import ProgramHeader from './components/ProgramHeader.vue'
 import ProgramCanvas from './components/ProgramCanvas.vue'
+import ProgramControl from './components/ProgramCanvas.vue'
 import ProgramInformation from './components/ProgramInformation.vue'
 
 export default {
@@ -14,6 +16,7 @@ export default {
   components: {
     ProgramHeader,
     ProgramCanvas,
+    ProgramControl,
     ProgramInformation,
   }
 }

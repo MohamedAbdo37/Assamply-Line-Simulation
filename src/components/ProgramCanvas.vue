@@ -7,11 +7,11 @@
                 @dragend="handleTransformEnd" />
         </v-stage> -->
     </div>
-    <ProgramControl></ProgramControl>
+    
 </template>
 
 <script>
-import ProgramControl from './ProgramControl.vue'
+
 
 // const width = document.querySelector(".canvas").width;
 // const height = document.querySelector(".canvas").height;
