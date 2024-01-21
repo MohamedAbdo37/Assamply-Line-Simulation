@@ -162,8 +162,8 @@ export default {
                 y: 50,
                 draggable: true
             }
-            await fetch("http://localhost:8081/AddMs" + new URLSearchParams({machineId: group.name}),{
-                methods: "GET",
+            await fetch(`http://localhost:8081/AddMs?machineId=${group.name}`,{
+                method: "GET",
             })
             this.machines.push(group);
         },
