@@ -134,7 +134,7 @@ export default {
             this.stageSize.height = document.querySelector(".canvas").offsetHeight;
             this.stageSize.width = document.querySelector(".canvas").offsetWidth;
         },
-        createM(m) {
+        async createM(m) {
             let mName = "M" + String(m);
 
             const mText = {
@@ -162,6 +162,9 @@ export default {
                 y: 50,
                 draggable: true
             }
+            await fetch("http://localhost:8081/AddMs" + new URLSearchParams({machineId: group.name}),{
+                methods: "GET",
+            })
             this.machines.push(group);
         },
         createQ(q) {
