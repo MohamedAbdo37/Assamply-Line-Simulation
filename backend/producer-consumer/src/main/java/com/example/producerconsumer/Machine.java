@@ -20,7 +20,7 @@ public class Machine {
         this.manager = Manager.getInstance();
         manager.addObserver(this.name, new MachineObserver(this.name));
     }
-    private AssemblerLine getAssemblerLine(){
+    public AssemblerLine getAssemblerLine(){
         return this.assemblerLine;
     }
 
