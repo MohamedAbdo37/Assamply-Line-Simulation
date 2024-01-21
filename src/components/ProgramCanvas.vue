@@ -3,16 +3,17 @@
         <v-stage id="stage" ref="stage" :config="stageSize" @mousedown="handleStageMouseDown"
             @touchstart="handleStageMouseDown">
             <v-layer>
-                <v-group v-for="item in machines" :key="item.id" :config="item" @transformend="handleTransformEnd"
-                    @dragend="handleTransformEnd">
-                    <v-circle :config="item.body" />
-                    <v-text :config="item.text" />
-                </v-group>
                 <v-group v-for="item in queues" :key="item.id" :config="item" @transformend="handleTransformEnd"
                     @dragend="handleTransformEnd">
                     <v-rect :config="item.body" />
                     <v-text :config="item.text" />
                     <v-text :config="item.queue" />
+                </v-group>
+                
+                <v-group v-for="item in machines" :key="item.id" :config="item" @transformend="handleTransformEnd"
+                    @dragend="handleTransformEnd">
+                    <v-circle :config="item.body" />
+                    <v-text :config="item.text" />
                 </v-group>
             </v-layer>
         </v-stage>
@@ -28,21 +29,10 @@ export default {
                 width: 100,
                 height: 400,
             },
-            // machine: undefined,
-            // queue: undefined,
-            machines: [
-
-            ],
-            machineTexts: [
-            ],
-            machineBodies: [
-            ],
-            queues: [
-            ]
-            // machine: undefined,
-            // queue: undefined,
-            // machines: [],
-            // queues: [],
+            // machine: -1,
+            // queue: -1,
+            machines: [],
+            queues: [],
         }
     },
     props:['machine', 'queue', 'mColor', 'qColor'],
@@ -99,7 +89,7 @@ export default {
                 name: qName,
                 text: qName,
                 fontSize: 19,
-                x: 20,
+                x: 55,
                 y: 56,
                 fill: "white"
             }
@@ -134,6 +124,17 @@ export default {
                 draggable: true
             }
             this.queues.push(group);
+        },
+        flash(name){
+            this.machines.forEach(m =>{
+                if( m.name === name){
+                    m.body.fill = 'white';
+                    setTimeout(() => {
+                        m.body.fill = this.mColor;
+                    }, 200);
+                    
+                }
+            })
         }
     },
     created() {
@@ -143,8 +144,7 @@ export default {
     },
     mounted() {
         this.setStageSize();
-        // this.createM(this.machine);
-        // this.createQ(this.queue);
+        this.createQ(this.queue);
     },
 }
 </script>
