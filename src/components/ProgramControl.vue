@@ -1,12 +1,12 @@
 <template>
     <div class="controlBar">
-        <button>></button>
-        <button>||</button>
-        <button>Stop Input</button>
-        <button>Replay</button>
-        <button>Clear</button>
-        <button>+M</button>
-        <button>+Q</button>
+        <button title="start"><img src="../assets/play.png"></button>
+        <button title="pause the operation"><img src="../assets/pause.png"></button>
+        <button title="stop sending inputs"><img src="../assets/stop.png"></button>
+        <button title="repeat the operation"><img src="../assets/reload.png"></button>
+        <button title="clear system"><img src="../assets/bin.png"></button>
+        <button title="add a machine">+M</button>
+        <button title="add a queue">+Q</button>
     </div>
 </template>
 
@@ -49,6 +49,12 @@ button{
 }
 button:hover{
     background-color: rgb(92, 173, 244);
-
+}
+button:active{
+    background-color: rgb(47, 152, 245);
+}
+img{
+    width: 20px;
+    height: 20px;
 }
 </style>

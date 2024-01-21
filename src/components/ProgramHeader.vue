@@ -1,12 +1,12 @@
 <template>
     <div class="header">
         <div style="display: flex; justify-content: space-between;">
-            <img src="../assets/logo.png">
-            <h2> ProSim </h2>
+            <div><img class="logo" src="../assets/logo.png"></div>
+            <div style="margin-left: 10px; "><h2> ProSim </h2></div>
         </div>
         <div>
-            <button @click="toggleSideBar">
-                |||
+            <button @click="toggleSideBar" title="advanced options">
+                <img src="../assets/menu.png">
             </button>
         </div>
     </div>
@@ -43,6 +43,10 @@ export default{
     z-index: -1;
 }
 img{
+    width: 20px;
+    height: 20px;
+}
+.logo{
     width: 50px;
     height: 50px;
 }
@@ -60,5 +64,8 @@ button{
 button:hover{
     background-color: rgb(92, 173, 244);
 
+}
+button:active{
+    background-color: rgb(47, 152, 245);
 }
 </style>

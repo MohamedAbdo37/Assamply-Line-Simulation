@@ -27,7 +27,7 @@
             
         </div>
         <div class="options">
-            <h3>Input:</h3>
+            <h3>Input Rate:</h3>
             <div>
                 <label for="random">Random  </label>
                 <input type="radio" name="inputCri" value="random" v-model="this.inputCri" checked>
@@ -65,7 +65,7 @@ export default{
 .sideBar{
     color: black;
     background-color: aliceblue;
-    height: 550px;
+    height: 580px;
     width: 210px;
     position: absolute;
     /* transform: translate(1000%, 0%); */
@@ -73,7 +73,7 @@ export default{
     padding: 10px;
     text-align: start;
     left: 1300px;
-    margin: 10px;
+    margin-top: 10px;
     animation-name: slide;
     animation-duration: 1s;
 }
