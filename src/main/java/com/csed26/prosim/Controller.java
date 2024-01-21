@@ -41,11 +41,11 @@ public class Controller {
     }
 
     @GetMapping("/connect")
-    public void connectMQ(@RequestParam String from, @RequestParam String to) {
-        if(to.toCharArray()[0] == 'Q')
-            ass.connectQM(from, to);
-        else
+    public void connect(@RequestParam String from, @RequestParam String to) {
+        if(from.contains("M"))
             ass.connectMQ(from, to);
+        else
+            ass.connectQM(to, from);
     }
 
     @GetMapping("/play")
@@ -54,12 +54,12 @@ public class Controller {
     }
 
     @GetMapping("/getMachineStatus")
-    public List<Machine> getMachineStatus() {
+    public ArrayList<Machine> getMachineStatus() {
         return ass.getMs();
     }
 
     @GetMapping("/getQueueStatus")
-    public List<Queue> getQueueStatus() {
+    public ArrayList<Queue> getQueueStatus() {
         return ass.getQs();
     }
 }
