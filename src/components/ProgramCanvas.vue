@@ -253,8 +253,8 @@ export default {
                         console.log(n)
                         fetch(`http://localhost:8081/connect?from=${from}&to=${to}`, {
                             method: "GET",
-                        }).then(()=>this.relations.push(R));
-                        
+                        })
+                        this.relations.push(R)
                         R = this.createR(r);
                         this.line = false;
                         document.querySelector(".canvas").removeEventListener("click", console.log("End"));
