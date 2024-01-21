@@ -79,7 +79,7 @@ export default {
         }
     },
     methods: {
-        d(){
+        d() {
             document.querySelector(".canvas").removeEventListener("click", console.log("End"));
         },
         handleStageMouseDown(e) {
@@ -163,7 +163,7 @@ export default {
                 y: 50,
                 draggable: true
             }
-            await fetch(`http://localhost:8081/AddMs?machineId=${group.name}`,{
+            await fetch(`http://localhost:8081/AddMs?machineId=${group.name}`, {
                 method: "GET",
             })
             this.machines.push(group);
@@ -209,7 +209,7 @@ export default {
                 y: 50,
                 draggable: true
             }
-            await fetch(`http://localhost:8081/AddQs?queueId=${group.name}`,{
+            await fetch(`http://localhost:8081/AddQs?queueId=${group.name}`, {
                 method: "GET",
             })
             this.queues.push(group);
@@ -233,9 +233,15 @@ export default {
             if (this.line === true) {
                 let n = 0;
                 let R = this.createR(1);
+                let from = null;
+                let to = null;
+
                 document.querySelector(".canvas").addEventListener("click", () => {
-                    
                     n = n + 1;
+                    if(n===1)
+                        from = this.selectedShapeID;
+                    if(n===2)
+                        to = this.selectedShapeID;
                     console.log(this.localMousePos);
                     if (R) {
                         R.points.push(this.localMousePos.x - R.x);
@@ -245,7 +251,10 @@ export default {
                     console.log(R);
                     if (n === 2) {
                         console.log(n)
-                        this.relations.push(R);
+                        fetch(`http://localhost:8081/connect?from=${from}&to=${to}`, {
+                            method: "GET",
+                        }).then(()=>this.relations.push(R));
+                        
                         R = this.createR(r);
                         this.line = false;
                         document.querySelector(".canvas").removeEventListener("click", console.log("End"));
