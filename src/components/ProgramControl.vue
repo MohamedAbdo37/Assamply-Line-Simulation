@@ -35,7 +35,6 @@ export default{
             this.$emit('addR', false);
         },
         addR(){
-            ++this.queue
             this.$emit('addR', true);
             this.$emit('clear', false);
         },clear(){

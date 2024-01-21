@@ -59,6 +59,7 @@ export default {
             if (this.clear) {
                 this.queues = []
                 this.machines = []
+                this.relations = []
                 this.createQ(this.queue);
             }
         },
@@ -70,7 +71,9 @@ export default {
             await this.drewArrow(0).then(() => {
                 console.log("line3", this.line);
                 document.querySelector(".canvas").removeEventListener("click", console.log("End"));
+                this.$emit('lineDone', false)
             });
+
 
         }
     },
