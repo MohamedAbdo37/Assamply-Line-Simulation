@@ -1,7 +1,7 @@
 <template>
   <div>
     <ProgramHeader></ProgramHeader>
-    <ProgramCanvas></ProgramCanvas>
+    <ProgramCanvas :machine="Ms" :queue="Qs"></ProgramCanvas>
     <ProgramControl></ProgramControl>
     <ProgramInformation></ProgramInformation>
   </div>
@@ -20,7 +20,16 @@ export default {
     ProgramCanvas,
     ProgramControl,
     ProgramInformation,
-  }
+  },
+  data() {
+    return {
+      Ms: -1,
+      Qs: -1,
+    }
+  },
+  mounted() {
+    this.Qs++;
+  },
 }
 </script>
 

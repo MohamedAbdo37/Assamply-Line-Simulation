@@ -1,15 +1,20 @@
 <template>
     <div class="canvas">
-        <v-stage id="stage" ref="stage" :config="stageSize" @mousedown="handleStageMouseDown" @touchstart="handleStageMouseDown">
+        <v-stage id="stage" ref="stage" :config="stageSize" @mousedown="handleStageMouseDown"
+            @touchstart="handleStageMouseDown">
             <v-layer>
-                <v-rect v-for="item in rectangles" :key="item.id" :config="item" @transformend="handleTransformEnd"
-                @dragend="handleTransformEnd" />
-                <v-circle v-for="item in circles" :key="item.id" :config="item" @transformend="handleTransformEnd"
-                @dragend="handleTransformEnd" />
+                <v-group v-for="item in machines" :key="item.id" :config="item" @transformend="handleTransformEnd"
+                    @dragend="handleTransformEnd">
+                    <v-circle :config="item.body"/>
+                    <v-text :config="item.text" />
+                </v-group>
+                <v-group v-for="item in queues" :key="item.id" :config="item">
+                    <v-rect v-for="item in rectangles" :key="item.id" :config="item" @transformend="handleTransformEnd"
+                        @dragend="handleTransformEnd" />
+                </v-group>
             </v-layer>
         </v-stage>
     </div>
-    
 </template>
 
 <script>
@@ -21,9 +26,18 @@ export default {
                 width: 100,
                 height: 400,
             },
-            circles: [],
-            rectangles: [
+            machine: undefined,
+            queue: undefined,
+            machines: [
+
+            ],
+            machineTexts: [
+            ],
+            machineBodies: [
+            ],
+            queues: [
                 {
+                    name: "Q0",
                     x: 20,
                     y: 50,
                     width: 100,
@@ -35,6 +49,12 @@ export default {
             ],
         }
     },
+    props:['m'],
+    watch: {
+        machine(){
+            this.createM(this.machine);
+        }
+    },
     methods: {
         handleStageMouseDown() {
 
@@ -42,9 +62,39 @@ export default {
         handleTransformEnd() {
 
         },
-        setStageSize(){
+        setStageSize() {
             this.stageSize.height = document.querySelector(".canvas").offsetHeight;
             this.stageSize.width = document.querySelector(".canvas").offsetWidth;
+        },
+        createM(m) {
+            let mName = "M" + String(m);
+            
+            const mText = {
+                name: mName,
+                text: mName,
+                fontSize: 20,
+                x: 8,
+                y: 42,
+                fill: "white"
+            }
+
+            const mBody = {
+                name: mName,
+                radius: 25,
+                x: 20,
+                y: 50,
+                fill: 'green'
+            }
+
+            const group = {
+                name: mName,
+                text: mText,
+                body: mBody,
+                x: 20,
+                y: 50,
+                draggable: true
+            }
+            this.machines.push(group);
         }
     },
     created() {
@@ -54,6 +104,8 @@ export default {
     },
     mounted() {
         this.setStageSize();
+        this.createM(this.machine);
+        
     },
 }
 </script>
@@ -64,10 +116,10 @@ export default {
     border-radius: 10px;
     height: 400px;
     margin: 10px;
-    z-index: -1;
+    z-index: 0;
 }
 
-#stage{
+#stage {
     margin: 5px;
 }
 </style>

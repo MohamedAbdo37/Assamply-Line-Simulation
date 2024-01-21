@@ -78,7 +78,7 @@ export default {
     margin-top: 10px;
     animation-name: slide;
     animation-duration: 1s;
-    z-index: 0;
+    z-index: 2;
 }
 
 @keyframes slide {
