@@ -3,13 +3,13 @@
         <v-stage id="stage" ref="stage" :config="stageSize" @mousedown="handleStageMouseDown"
             @touchstart="handleStageMouseDown">
             <v-layer>
-                <v-group v-for="item in queues" :key="item.id" :config="item" >
+                <v-group v-for="item in queues" :key="item.id" :config="item">
                     <v-rect :config="item.body" />
                     <v-text :config="item.text" />
                     <v-text :config="item.queue" />
                 </v-group>
 
-                <v-group v-for="item in machines" :key="item.id" :config="item" >
+                <v-group v-for="item in machines" :key="item.id" :config="item">
                     <v-circle :config="item.body" />
                     <v-text :config="item.text" />
                 </v-group>
@@ -34,6 +34,7 @@ export default {
             relations: [],
             localMousePos: { x: undefined, y: undefined },
             selectedShapeID: "",
+            line: false,
         }
     },
     props: ['machine', 'queue', 'mColor', 'qColor', 'clear', 'relation'],
@@ -41,7 +42,7 @@ export default {
         machine() {
             this.createM(this.machine);
         }
-        ,queue() {
+        , queue() {
             this.createQ(this.queue);
         },
         mColor() {
@@ -61,37 +62,15 @@ export default {
                 this.createQ(this.queue);
             }
         },
-        relation() {
-            if (this.relation === false) return;
-            let n = 0
-            const R = this.createR(0);
-            document.querySelector(".canvas").addEventListener("click", () => {
-                if(n === 1){
-                    this.relations.push(R);
-                    document.querySelector(".canvas").removeEventListener("click", console.log("End"));
-                }
-                n++;
-                console.log(this.localMousePos);
-                R.points.push(this.localMousePos.x - R.x);
-                R.points.push(this.localMousePos.y - R.y);
-                console.log(R.points);
-                console.log(R);
-            })
-            // document.querySelector(".canvas").addEventListener("dblclick", () => {
-            //     let R = undefined;
-            //     if (n !== 0) R = this.relations.pop();
-            //     else {
-            //         document.querySelector(".canvas").removeEventListener("click", console.log("no target"));
-            //         document.querySelector(".canvas").removeEventListener("dblclick", console.log("End"));
-            //     }
-            //     n++;
-            //     console.log(this.localMousePos);
-            //     console.log(R.points);
-            //     console.log(R);
-            //     this.relations.push(R);
-            //     document.querySelector(".canvas").removeEventListener("click", console.log("target"));
-            //     document.querySelector(".canvas").removeEventListener("dblclick", console.log("End"));
-            // })
+        async relation() {
+            console.log(this.relation);
+            console.log("line1", this.line);
+            this.line = this.relation;
+            console.log("line2", this.line);
+            await this.drewArrow(0).then(() => {
+                console.log("line3", this.line);
+                document.querySelector(".canvas").removeEventListener("click", console.log("End"));
+            });
 
         }
     },
@@ -144,26 +123,7 @@ export default {
             shape.x = e.target.x();
             shape.y = e.target.y();
         },
-        // updateTransformer() {
-        //     // here we need to manually attach or detach Transformer node
-        //     const transformerNode = this.$refs.transformer.getNode();
-        //     const stage = transformerNode.getStage();
-        //     const { selectedShapeID } = this;
 
-        //     const selectedNode = stage.findOne('.' + selectedShapeID);
-        //     // do nothing if selected node is already attached
-        //     if (selectedNode === transformerNode.node()) {
-        //         return;
-        //     }
-
-        //     if (selectedNode) {
-        //         // attach to another node
-        //         transformerNode.nodes([selectedNode]);
-        //     } else {
-        //         // remove transformer
-        //         transformerNode.nodes([]);
-        //     }
-        // },
         setStageSize() {
             this.stageSize.height = document.querySelector(".canvas").offsetHeight;
             this.stageSize.width = document.querySelector(".canvas").offsetWidth;
@@ -255,6 +215,33 @@ export default {
             }
             return relation;
         },
+        async drewArrow(r) {
+            console.log("arrow")
+            if (this.line === true) {
+                let n = 0;
+                let R = this.createR(1);
+                document.querySelector(".canvas").addEventListener("click", () => {
+                    
+                    n = n + 1;
+                    console.log(this.localMousePos);
+                    if (R) {
+                        R.points.push(this.localMousePos.x - R.x);
+                        R.points.push(this.localMousePos.y - R.y);
+                    }
+                    console.log(R.points);
+                    console.log(R);
+                    if (n === 2) {
+                        console.log(n)
+                        this.relations.push(R);
+                        R = this.createR(r);
+                        this.line = false;
+                        document.querySelector(".canvas").removeEventListener("click", console.log("End"));
+                        return;
+                    }
+                })
+            }
+            else return
+        },
         flash(name) {
             this.machines.forEach(m => {
                 if (m.name === name) {
@@ -273,31 +260,6 @@ export default {
                 }
             }
         },
-        // changeQC(name, color){
-        //     for (let i=0; i < this.machines.length; i++){
-        //         if (this.queues[i].name == name){
-        //             this.queues[i].body.fill = color
-        //         }
-        //     }
-        // },
-        // inMachine(name){
-        //     for (let i=0; i < this.machines.length; i++){
-        //         if (this.machines[i].name == name){
-        //             let temp = Number(this.machines[i].queue.text)
-        //             ++temp
-        //             this.machines[i].queue.text = temp
-        //         }
-        //     }
-        // },
-        // deMachine(name){
-        //     for (let i=0; i < this.machines.length; i++){
-        //         if (this.machines[i].name == name){
-        //             let temp = Number(this.machines[i].queue.text)
-        //             --temp
-        //             this.machines[i].queue.text = temp
-        //         }
-        //     }
-        // },
         inQueue(name) {
             for (let i = 0; i < this.queues.length; i++) {
                 if (this.queues[i].name == name) {
@@ -324,14 +286,36 @@ export default {
         }
         // const canvas = document.querySelector(".canvas")
         window.addEventListener('mousemove', (event) => {
-            const localX = event.clientX - event.target.offsetLeft;
-            const localY = event.clientY - event.target.offsetTop;
+            const localX = event.clientX - 10;
+            const localY = event.clientY - 80;
             this.localMousePos = { x: localX, y: localY };
         });
+
+        if (this.line) {
+            let n = 0;
+            let R = this.createR(1);
+            document.querySelector(".canvas").addEventListener("click", () => {
+                if (n === 1) {
+                    this.relations.push(R);
+                    this.createR(0);
+                }
+                n = n + 1;
+                console.log(this.localMousePos);
+                if (R) {
+                    R.points.push(this.localMousePos.x - R.x);
+                    R.points.push(this.localMousePos.y - R.y);
+                }
+                console.log(R.points);
+                console.log(R);
+            })
+        }
     },
     mounted() {
         this.setStageSize();
         this.createQ(this.queue);
+    },
+    unmounted() {
+
     },
 }
 </script>
