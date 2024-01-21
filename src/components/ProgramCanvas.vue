@@ -5,12 +5,14 @@
             <v-layer>
                 <v-group v-for="item in machines" :key="item.id" :config="item" @transformend="handleTransformEnd"
                     @dragend="handleTransformEnd">
-                    <v-circle :config="item.body"/>
+                    <v-circle :config="item.body" />
                     <v-text :config="item.text" />
                 </v-group>
-                <v-group v-for="item in queues" :key="item.id" :config="item">
-                    <v-rect v-for="item in rectangles" :key="item.id" :config="item" @transformend="handleTransformEnd"
-                        @dragend="handleTransformEnd" />
+                <v-group v-for="item in queues" :key="item.id" :config="item" @transformend="handleTransformEnd"
+                    @dragend="handleTransformEnd">
+                    <v-rect :config="item.body" />
+                    <v-text :config="item.text" />
+                    <v-text :config="item.queue" />
                 </v-group>
             </v-layer>
         </v-stage>
@@ -47,11 +49,15 @@ export default {
                     draggable: true
                 }
             ],
+            machine: undefined,
+            queue: undefined,
+            machines: [],
+            queues: [],
         }
     },
     props:['machine', 'queue'],
     watch: {
-        machine(){
+        machine() {
             this.createM(this.machine);
         }
     },
@@ -68,7 +74,7 @@ export default {
         },
         createM(m) {
             let mName = "M" + String(m);
-            
+
             const mText = {
                 name: mName,
                 text: mName,
@@ -95,6 +101,49 @@ export default {
                 draggable: true
             }
             this.machines.push(group);
+        },
+        createQ(q) {
+            let qName = "Q" + String(q);
+
+            const qText = {
+                name: qName,
+                text: qName,
+                fontSize: 19,
+                x: 20,
+                y: 56,
+                fill: "white"
+            }
+
+            const qQueue = {
+                name: qName,
+                text: 0,
+                fontSize: 20,
+                x: 60,
+                y: 78,
+                fill: "white",
+            }
+
+            const qBody = {
+                name: qName,
+                x: 20,
+                y: 50,
+                width: 100,
+                height: 50,
+                fill: 'red',
+                shadowBlur: 10
+            }
+
+
+            const group = {
+                name: qName,
+                text: qText,
+                body: qBody,
+                queue: qQueue,
+                x: 20,
+                y: 50,
+                draggable: true
+            }
+            this.queues.push(group);
         }
     },
     created() {
@@ -105,7 +154,7 @@ export default {
     mounted() {
         this.setStageSize();
         this.createM(this.machine);
-        
+        this.createQ(this.queue);
     },
 }
 </script>
