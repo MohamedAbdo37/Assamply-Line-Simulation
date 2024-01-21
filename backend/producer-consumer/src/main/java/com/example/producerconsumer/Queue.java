@@ -24,17 +24,18 @@ public class Queue {
     public String getName() {
         return this.name;
     }
-    public void enqueue(Item item , AssemblerLine assemblerLine) {
+    public synchronized void enqueue(Item item , AssemblerLine assemblerLine) {
         synchronized (this) {
             queue.add(item);
             this.manager.notify(this.name, assemblerLine);
-            this.notifyAll();
+            this.notify();
         }
 
     }
 
-    public Item dequeue(AssemblerLine assemblerLine) {
+    public Item dequeue(AssemblerLine assemblerLine) throws InterruptedException {
         synchronized (this) {
+            while(this.queue.size() == 0) this.wait();
             this.manager.notify(this.name, assemblerLine);
             Item item = queue.remove(0);
             return item;
@@ -45,9 +46,6 @@ public class Queue {
         return queue.size();
     }
     public boolean isEmpty() {
-        if(queue.size() == 0) {
-            return true;
-        }
-        return false;
+        return queue.size() == 0;
     }
 }

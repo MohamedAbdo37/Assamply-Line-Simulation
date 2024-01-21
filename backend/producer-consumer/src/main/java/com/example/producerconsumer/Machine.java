@@ -15,7 +15,7 @@ public class Machine {
 
     private boolean lock = false;
 
-    public Machine(String name,AssemblerLine ass) {
+    public Machine(String name, AssemblerLine ass) {
         this.assemblerLine = ass;
         this.name = name;
         this.serviceTime = (int) (randomgenerate() * 1000);
@@ -61,10 +61,8 @@ public class Machine {
                             while (preQueue.isEmpty()) {
                                 preQueue.wait();
                             };
-                            for(Queue queue : assemblerLine.Qs) {
-                                System.out.print(queue.size() + " ");
-                            }
-                            System.out.println();
+
+                            //System.out.println(preQueue.size() + " " + getName());
                             setItem(preQueue.dequeue(getAssemblerLine()));
                             lock = true;
                             preQueue.wait();
