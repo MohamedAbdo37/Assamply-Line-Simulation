@@ -28,8 +28,8 @@ export default {
                 width: 100,
                 height: 400,
             },
-            machine: undefined,
-            queue: undefined,
+            machine: -1,
+            queue: -1,
             machines: [],
             queues: [],
         }
@@ -88,7 +88,7 @@ export default {
                 name: qName,
                 text: qName,
                 fontSize: 19,
-                x: 20,
+                x: 60,
                 y: 56,
                 fill: "white"
             }
@@ -123,6 +123,17 @@ export default {
                 draggable: true
             }
             this.queues.push(group);
+        },
+        flash(name){
+            this.machines.forEach(m =>{
+                if( m.name === name){
+                    m.body.fill = 'white';
+                    setTimeout(() => {
+                        m.body.fill = this.mColor;
+                    }, 200);
+                    
+                }
+            })
         }
     },
     created() {
