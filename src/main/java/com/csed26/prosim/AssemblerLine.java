@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class AssemblerLine {
 
+    private SystemInput sys;
     public ArrayList<Machine> Ms = new ArrayList<>();
     public ArrayList<Queue> Qs=new ArrayList<>();
     private boolean Change = false;
@@ -66,6 +67,20 @@ public class AssemblerLine {
         }
     }
 
+    public void startLine(String initialQueue) {
+        Queue q = Qs.stream()
+                .filter(queue -> initialQueue.equals(queue.getName()))
+                .findAny()
+                .orElse(null);
+        if(q != null) {
+            sys = new SystemInput(q, this);
+            sys.play();
+            for(Machine m : this.Ms) {
+                m.startWork();
+            }
+        }
+    }
+
     public static void main(String[] args) {
         AssemblerLine ass = new AssemblerLine();
         ass.Ms.add(new Machine("M1", ass));
@@ -96,11 +111,7 @@ public class AssemblerLine {
         ass.connectMQ("M4", "Q2");
         ass.connectMQ("M5", "Q3");
 
-
-        sys.play();
-        for(Machine m : ass.Ms) {
-            m.startWork();
-        }
+        ass.startLine("Q0");
 
     }
 }
