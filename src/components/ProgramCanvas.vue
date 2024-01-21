@@ -155,21 +155,21 @@ export default {
             })
         },
         changeMC(name, color){
-            for (let i in this.machines.length){
+            for (let i=0; i < this.machines.length; i++){
                 if (this.machines[i].name == name){
                     this.machines[i].body.fill = color
                 }
             }
         },
         changeQC(name, color){
-            for (let i in this.queues.length){
+            for (let i=0; i < this.machines.length; i++){
                 if (this.queues[i].name == name){
                     this.queues[i].body.fill = color
                 }
             }
         },
         inMachine(name){
-            for (let i in this.machines.length){
+            for (let i=0; i < this.machines.length; i++){
                 if (this.machines[i].name == name){
                     let temp = Number(this.machines[i].queue.text)
                     ++temp
@@ -178,7 +178,7 @@ export default {
             }
         },
         deMachine(name){
-            for (let i in this.machines.length){
+            for (let i=0; i < this.machines.length; i++){
                 if (this.machines[i].name == name){
                     let temp = Number(this.machines[i].queue.text)
                     --temp
@@ -187,16 +187,17 @@ export default {
             }
         },
         inQueue(name){
-            for (let i in this.queues.length){
+            for (let i=0; i < this.queues.length; i++){
                 if (this.queues[i].name == name){
                     let temp = Number(this.queues[i].queue.text)
                     ++temp
+                    
                     this.queues[i].queue.text = temp
                 }
             }
         },
         deQueue(name){
-            for (let i in this.queues.length){
+            for (let i=0; i < this.queues.length; i++){
                 if (this.queues[i].name == name){
                     let temp = Number(this.queues[i].queue.text)
                     --temp
