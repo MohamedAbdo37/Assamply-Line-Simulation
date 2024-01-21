@@ -9,7 +9,7 @@
                     <v-text :config="item.text" />
                     <v-text :config="item.queue" />
                 </v-group>
-                
+
                 <v-group v-for="item in machines" :key="item.id" :config="item" @transformend="handleTransformEnd"
                     @dragend="handleTransformEnd">
                     <v-circle :config="item.body" />
@@ -39,6 +39,9 @@ export default {
     watch: {
         machine() {
             this.createM(this.machine);
+        }
+        ,queue() {
+            this.createQ(this.queue);
         }
     },
     methods: {
