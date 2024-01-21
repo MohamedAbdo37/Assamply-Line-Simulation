@@ -1,9 +1,9 @@
 <template>
     <div class="controlBar">
-        <button title="start"><img src="../assets/play.png" alt="start operation"></button>
-        <button title="pause the operation"><img src="../assets/pause.png" alt="pause operation"></button>
-        <button title="stop sending inputs"><img src="../assets/stop.png" alt="stop input"></button>
-        <button title="repeat the operation"><img src="../assets/reload.png" alt="repeat operation"></button>
+        <button title="start" @click="play"><img src="../assets/play.png" alt="start operation"></button>
+        <button title="pause the operation" @click="pause"><img src="../assets/pause.png" alt="pause operation"></button>
+        <button title="stop sending inputs" @click="stop"><img src="../assets/stop.png" alt="stop input"></button>
+        <button title="repeat the operation" @click="replay"><img src="../assets/reload.png" alt="repeat operation"></button>
         <button title="clear system" @click="clear"><img src="../assets/bin.png" alt="clear"></button>
         <button title="add a machine" @click="addM"><img src="../assets/add.png" alt="add machine">Machine</button>
         <button title="add a queue" @click="addQ"><img src="../assets/add.png" alt="add queue">Queue</button>
@@ -22,6 +22,26 @@ export default{
         }
     },
     methods:{
+        async pause(){
+            // await fetch(`http://localhost:8081/play?initialQueue=${group.name}`, {
+            //     method: "GET",
+            // })
+        },
+        async stop(){
+            // await fetch(`http://localhost:8081/play?initialQueue=${group.name}`, {
+            //     method: "GET",
+            // })
+        },
+        async play(){
+            // await fetch(`http://localhost:8081/play?initialQueue=${group.name}`, {
+            //     method: "GET",
+            // })
+        },
+        async replay(){
+            // await fetch(`http://localhost:8081/replay`, {
+            //     method: "GET",
+            // })
+        },
         addM(){
             ++this.machine
             this.$emit('mChange', this.machine);

@@ -18,6 +18,9 @@ export default{
             products: ""
         }
     },
+    mounted:{
+        
+    },
     methods:{
         
     }
