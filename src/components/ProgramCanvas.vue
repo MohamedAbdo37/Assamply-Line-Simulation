@@ -1,10 +1,10 @@
 <template>
     <div class="canvas">
         <v-stage id="stage" ref="stage" :config="stageSize" @mousedown="handleStageMouseDown"
-            @touchstart="handleStageMouseDown">
+            @touchstart="handleStageMouseDown" >
             <v-layer>
                 <v-group v-for="item in queues" :key="item.id" :config="item" @transformend="handleTransformEnd"
-                    @dragend="handleTransformEnd">
+                    @dragend="handleTransformEnd" >
                     <v-rect :config="item.body" />
                     <v-text :config="item.text" />
                     <v-text :config="item.queue" />
@@ -12,7 +12,7 @@
 
                 <v-group v-for="item in machines" :key="item.id" :config="item" @transformend="handleTransformEnd"
                     @dragend="handleTransformEnd">
-                    <v-circle :config="item.body" />
+                    <v-circle :config="item.body"/>
                     <v-text :config="item.text" />
                 </v-group>
             </v-layer>
@@ -29,19 +29,34 @@ export default {
                 width: 100,
                 height: 400,
             },
-            // machine: -1,
-            // queue: -1,
             machines: [],
             queues: [],
         }
     },
-    props:['machine', 'queue', 'mColor', 'qColor'],
+    props:['machine', 'queue', 'mColor', 'qColor', 'clear'],
     watch: {
         machine() {
             this.createM(this.machine);
         }
         ,queue() {
             this.createQ(this.queue);
+        },
+        mColor(){
+            for (let i = 0; i < this.machines.length; i++){
+                this.machines[i].body.fill = this.mColor
+            }
+        },
+        qColor(){
+            for (let i = 0; i < this.queues.length; i++){
+                this.queues[i].body.fill = this.qColor
+            }
+        },
+        clear(){
+            if (this.clear){
+                this.queues = []
+                this.machines = []
+                this.createQ(this.queue);
+            }
         }
     },
     methods: {

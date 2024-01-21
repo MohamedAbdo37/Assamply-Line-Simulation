@@ -1,8 +1,8 @@
 <template>
   <div>
     <ProgramHeader @mColor="this.mColor = $event" @qColor="this.qColor = $event"></ProgramHeader>
-    <ProgramCanvas :machine=Ms :queue=Qs :mColor=mColor :qColor=qColor></ProgramCanvas>
-    <ProgramControl :m=Ms :q=Qs @mChange="this.Ms = $event" @qChange="this.Qs = $event"></ProgramControl>
+    <ProgramCanvas :machine=Ms :queue=Qs :mColor=mColor :qColor=qColor :clear=clear></ProgramCanvas>
+    <ProgramControl :m=Ms :q=Qs @mChange="this.Ms = $event" @qChange="this.Qs = $event" @clear="this.clear = $event"></ProgramControl>
     <ProgramInformation></ProgramInformation>
   </div>
 </template>
@@ -26,11 +26,11 @@ export default {
       Ms: -1,
       Qs: 0,
       mColor: "#089DDD",
-      qColor: "#ddaf08"
+      qColor: "#ddaf08",
+      clear: false
     }
   },
   mounted() {
-    this.Qs++;
   },
 }
 </script>

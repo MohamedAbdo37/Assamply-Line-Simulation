@@ -24,16 +24,19 @@ export default{
         addM(){
             ++this.machine
             this.$emit('mChange', this.machine);
+            this.$emit('clear', false);
         },
         addQ(){
             ++this.queue
             this.$emit('qChange', this.queue);
+            this.$emit('clear', false);
         },
         clear(){
             this.machine = -1
             this.queue = 0
             this.$emit('mChange', this.machine);
             this.$emit('qChange', this.queue);
+            this.$emit('clear', true);
         }
     }
 }
