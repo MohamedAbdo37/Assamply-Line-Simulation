@@ -1,8 +1,8 @@
 <template>
   <div>
     <ProgramHeader></ProgramHeader>
-    <ProgramCanvas :machine="Ms" :queue="Qs"></ProgramCanvas>
-    <ProgramControl></ProgramControl>
+    <ProgramCanvas :machine=Ms :queue=Qs></ProgramCanvas>
+    <ProgramControl :m=Ms :q=Qs @mChange="this.Ms = $event" @qChange="this.Qs = $event"></ProgramControl>
     <ProgramInformation></ProgramInformation>
   </div>
 </template>

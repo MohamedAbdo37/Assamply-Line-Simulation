@@ -28,13 +28,13 @@ export default {
                 width: 100,
                 height: 400,
             },
-            machine: -1,
-            queue: -1,
+            // machine: -1,
+            // queue: -1,
             machines: [],
             queues: [],
         }
     },
-    props: ['m'],
+    props:['machine', 'queue'],
     watch: {
         machine() {
             this.createM(this.machine);
