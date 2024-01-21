@@ -39,13 +39,11 @@ public class controller {
         return lines;
     }
 
-    @GetMapping("/connectMachineQueue")
-    public void connectMQ(@RequestParam String machineId, @RequestParam String queueId) {
-        ass.connectMQ(machineId, queueId);
-    }
-
-    @GetMapping("/connectQueueMachine")
-    public void connectQM(@RequestParam String machineId, @RequestParam String queueId) {
-        ass.connectQM(machineId, queueId);
+    @GetMapping("/connect")
+    public void connectMQ(@RequestParam String from, @RequestParam String to) {
+        if(to.toCharArray()[0] == 'Q')
+            ass.connectQM(from, to);
+        else
+            ass.connectMQ(from, to);
     }
 }
