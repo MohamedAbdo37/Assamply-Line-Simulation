@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 export default {
     name: 'ProgramCanvas',
     data() {
@@ -76,9 +76,9 @@ export default {
             });
         },
         qStatues(){
-            this.qStatues.forEach(q => {
-                this.resetQueue(q.name, q.size);
-            })
+            // this.qStatues.forEach(q => {
+            //     this.resetQueue(q.name, q.size);
+            // })
         },
         // mStatues(){
         //     this.mStatues.forEach(q => {
@@ -171,7 +171,9 @@ export default {
                 y: 50,
                 draggable: true
             }
-            await axios.get(`http://localhost:8081/AddMs?machineId=${group.name}`)
+            await fetch(`http://localhost:8081/AddMs?machineId=${group.name}`,{
+                method: 'GET',
+            })
             this.machines.push(group);
         },
         async createQ(q) {

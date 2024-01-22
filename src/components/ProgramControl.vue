@@ -3,7 +3,8 @@
         <button title="start" @click="play"><img src="../assets/play.png" alt="start operation"></button>
         <button title="pause the operation" @click="pause"><img src="../assets/pause.png" alt="pause operation"></button>
         <button title="stop sending inputs" @click="stop"><img src="../assets/stop.png" alt="stop input"></button>
-        <button title="repeat the operation" @click="replay"><img src="../assets/reload.png" alt="repeat operation"></button>
+        <button title="repeat the operation" @click="replay"><img src="../assets/reload.png"
+                alt="repeat operation"></button>
         <button title="clear system" @click="clear"><img src="../assets/bin.png" alt="clear"></button>
         <button title="add a machine" @click="addM"><img src="../assets/add.png" alt="add machine">Machine</button>
         <button title="add a queue" @click="addQ"><img src="../assets/add.png" alt="add queue">Queue</button>
@@ -12,102 +13,115 @@
 </template>
 
 <script>
-export default{
+// import axios from 'axios'
+export default {
     name: 'ProgramControl',
     props: ['m', 'q'],
-    data(){
-        return{
+    data() {
+        return {
             machine: this.m,
-            queue: this.q
+            queue: this.q,
+            start: false,
+            playID: undefined,
         }
     },
-    methods:{
-        async pause(){
+    methods: {
+        async pause() {
+            // await fetch(`http://localhost:8081/play?initialQueue=${group.name}`, {
+            //     method: "GET",
+            // })
+            clearInterval();
+            this.start = false;
+        },
+        async stop() {
             // await fetch(`http://localhost:8081/play?initialQueue=${group.name}`, {
             //     method: "GET",
             // })
         },
-        async stop(){
-            // await fetch(`http://localhost:8081/play?initialQueue=${group.name}`, {
-            //     method: "GET",
-            // })
-        },
-        async play(){
+        async play() {
             await fetch(`http://localhost:8081/play?initialQueue=Q0`, {
                 method: "GET",
-            }).then(()=>this.start = true)
+            }).then(() => this.start = true)
         },
-        async replay(){
+        async replay() {
             // await fetch(`http://localhost:8081/replay`, {
             //     method: "GET",
             // })
         },
-        addM(){
+        addM() {
             ++this.machine
             this.$emit('mChange', this.machine);
             this.$emit('clear', false);
             // this.$emit('addR', FontFaceSetLoadEvent);
         },
-        addQ(){
+        addQ() {
             ++this.queue
             this.$emit('qChange', this.queue);
             this.$emit('clear', false);
             this.$emit('addR', false);
         },
-        addR(){
+        addR() {
             this.$emit('addR', true);
             this.$emit('clear', false);
-        },clear(){
+        }, clear() {
             this.machine = -1
             this.queue = 0
             this.$emit('mChange', this.machine);
             this.$emit('qChange', this.queue);
             this.$emit('addR', false);
             this.$emit('clear', true);
-            
+
         },
-        async fetchMachinesStatus(){
-            let list = null;
-            await fetch("http://localhost:8081/getMachineStatus",{
-                method:"GET"
-            }).then(r => list = r)
+        async fetchMachinesStatus() {
+            let list = await fetch("http://localhost:8081/getMachineStatus", {
+                method: "GET"
+            });
+            console.log(list);
             return list;
         },
-        async fetchQueuesStatus(){
-            let list = null;
-            await fetch("http://localhost:8081/getQueueStatus",{
-                method:"GET"
-            }).then((r) => {
-                list = r
-                console.log(r)
+        async fetchQueuesStatus() {
+            let list = await fetch("http://localhost:8081/getQueueStatus", {
+                method: "GET"
             })
+            console.log(list);
             return list;
         }
     },
     created() {
-        if(this.start){
-            setInterval(async () => {
-                this.$emit("machinesList", this.fetchMachinesStatus());
-                this.$emit("queuesList", this.fetchQueuesStatus());
-            }, 500);
+
+    },
+    watch: {
+        start() {
+            console.log(this.start);
+            if (this.start === true) {
+                console.log(this.start);
+                this.playID = setInterval(async () => {
+                    // this.$emit("machinesList", this.fetchMachinesStatus());
+                    this.$emit("queuesList", this.fetchQueuesStatus());
+                }, 15000);
+            }
+            else {
+                console.log(this.start);
+                clearInterval(this.playID);
+            }
         }
     },
 }
 </script>
 
 <style scoped>
-.controlBar{
+.controlBar {
     display: flex;
     justify-content: space-evenly;
     background-color: rgb(140, 198, 249);
     padding: 10px;
-    border-radius: 20px; 
+    border-radius: 20px;
     margin: 10px;
 }
 
-button{
+button {
     width: 200px;
-    /* height: 50px; */ 
+    /* height: 50px; */
     color: rgb(20, 20, 20);
     font-weight: bold;
     font-size: large;
@@ -118,14 +132,16 @@ button{
     outline: none;
 
 }
-button:hover{
+
+button:hover {
     background-color: rgb(92, 173, 244);
 }
-button:active{
+
+button:active {
     background-color: rgb(47, 152, 245);
 }
-img{
+
+img {
     width: 20px;
     height: 20px;
-}
-</style>
+}</style>
