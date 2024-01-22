@@ -77,7 +77,10 @@ export default{
             let list = null;
             await fetch("http://localhost:8081/getQueueStatus",{
                 method:"GET"
-            }).then(r => list = r)
+            }).then((r) => {
+                list = r
+                console.log(r)
+            })
             return list;
         }
     },

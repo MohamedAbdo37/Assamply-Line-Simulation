@@ -21,7 +21,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 export default {
     name: 'ProgramCanvas',
     data() {
@@ -171,9 +171,7 @@ export default {
                 y: 50,
                 draggable: true
             }
-            await fetch(`http://localhost:8081/AddMs?machineId=${group.name}`, {
-                method: "GET",
-            })
+            await axios.get(`http://localhost:8081/AddMs?machineId=${group.name}`)
             this.machines.push(group);
         },
         async createQ(q) {
