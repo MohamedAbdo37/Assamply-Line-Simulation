@@ -33,9 +33,9 @@ export default{
             // })
         },
         async play(){
-            // await fetch(`http://localhost:8081/play?initialQueue=${group.name}`, {
-            //     method: "GET",
-            // })
+            await fetch(`http://localhost:8081/play?initialQueue=Q0`, {
+                method: "GET",
+            }).then(()=>this.start = true)
         },
         async replay(){
             // await fetch(`http://localhost:8081/replay`, {
@@ -65,8 +65,30 @@ export default{
             this.$emit('addR', false);
             this.$emit('clear', true);
             
+        },
+        async fetchMachinesStatus(){
+            let list = null;
+            await fetch("http://localhost:8081/getMachineStatus",{
+                method:"GET"
+            }).then(r => list = r)
+            return list;
+        },
+        async fetchQueuesStatus(){
+            let list = null;
+            await fetch("http://localhost:8081/getQueueStatus",{
+                method:"GET"
+            }).then(r => list = r)
+            return list;
         }
-    }
+    },
+    created() {
+        if(this.start){
+            setInterval(async () => {
+                this.$emit("machinesList", this.fetchMachinesStatus());
+                this.$emit("queuesList", this.fetchQueuesStatus());
+            }, 500);
+        }
+    },
 }
 </script>
 

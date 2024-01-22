@@ -1,9 +1,11 @@
 <template>
   <div>
     <ProgramHeader @mColor="this.mColor = $event" @qColor="this.qColor = $event"></ProgramHeader>
-    <ProgramCanvas :machine=Ms :queue=Qs :mColor=mColor :qColor=qColor :clear=clear :relation=createR @lineDone="this.createR = $event"></ProgramCanvas>
+    <ProgramCanvas :machine=Ms :queue=Qs :mColor=mColor :qColor=qColor :clear=clear :relation=createR
+      @lineDone="this.createR = $event" :mStatues=mList :qStatues=qList ></ProgramCanvas>
     <ProgramControl :m=Ms :q=Qs @mChange="this.Ms = $event" @qChange="this.Qs = $event" @clear="this.clear = $event"
-      @addR="this.createR = $event"></ProgramControl>
+      @addR="this.createR = $event" @machinesList="this.mList = $event" @queuesList="this.qList = $event">
+    </ProgramControl>
     <ProgramInformation></ProgramInformation>
   </div>
 </template>
@@ -30,6 +32,8 @@ export default {
       qColor: "#ddaf08",
       clear: false,
       createR: false,
+      mList: [],
+      qList: [],
     }
   },
   mounted() {

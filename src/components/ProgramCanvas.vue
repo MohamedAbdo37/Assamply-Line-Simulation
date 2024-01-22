@@ -38,7 +38,7 @@ export default {
             line: false,
         }
     },
-    props: ['machine', 'queue', 'mColor', 'qColor', 'clear', 'relation'],
+    props: ['machine', 'queue', 'mColor', 'qColor', 'clear', 'relation', 'mStatues', 'qStatues'],
     watch: {
         machine() {
             this.createM(this.machine);
@@ -74,9 +74,17 @@ export default {
                 document.querySelector(".canvas").removeEventListener("click", console.log("End"));
                 this.$emit('lineDone', false)
             });
-
-
-        }
+        },
+        qStatues(){
+            this.qStatues.forEach(q => {
+                this.resetQueue(q.name, q.size);
+            })
+        },
+        // mStatues(){
+        //     this.mStatues.forEach(q => {
+        //         this.resetQueue(q.name, q.size);
+        //     })
+        // }
     },
     methods: {
         d() {
@@ -282,13 +290,10 @@ export default {
                 }
             }
         },
-        inQueue(name) {
+        resetQueue(name, value) {
             for (let i = 0; i < this.queues.length; i++) {
                 if (this.queues[i].name == name) {
-                    let temp = Number(this.queues[i].queue.text)
-                    ++temp
-
-                    this.queues[i].queue.text = temp
+                    this.queues[i].queue.text = String(value)
                 }
             }
         },
