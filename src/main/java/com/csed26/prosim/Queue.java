@@ -19,6 +19,7 @@ public class Queue {
         this.assemblerLine=ass;
         this.manager = Manager.getInstance();
         this.manager.addObserver(this.name, new QueueObserver());
+        System.out.println(this.getName());
     }
     public AssemblerLine getAssemblerLine(){
         return this.assemblerLine;

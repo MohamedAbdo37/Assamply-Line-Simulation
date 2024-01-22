@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:8080")
+@CrossOrigin
 public class Controller {
 
     private ArrayList<Machine> Ms = new ArrayList<>();
@@ -16,6 +16,7 @@ public class Controller {
 
     @GetMapping("/AddMs")
     public void addMs(@RequestParam String machineId) {
+        System.out.println("AddMs");
         Ms.add(new Machine(machineId, ass));
         ass.setMs(Ms);
         ass.setQs(Qs);
@@ -55,11 +56,13 @@ public class Controller {
 
     @GetMapping("/getMachineStatus")
     public ArrayList<Machine> getMachineStatus() {
+        System.out.println("fetching machines");
         return ass.getMs();
     }
 
     @GetMapping("/getQueueStatus")
     public ArrayList<Queue> getQueueStatus() {
+        System.out.println("fetching queues");
         return ass.getQs();
     }
 }
