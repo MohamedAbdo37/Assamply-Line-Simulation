@@ -121,10 +121,15 @@ export default {
                 if (m.color !== null) {
                     this.mOnging.text = String(m.state)
                     this.changeMState(m.name, this.mOnging);
-                    this.flash(m.name);
+                    this.changeMColor(m.name, m.color);
                 }
-                else
+                else {
+                    this.flash(m.name);
                     this.changeMState(m.name, this.mReady);
+                    
+                }
+                    
+
             })
         },
         start() {
@@ -366,7 +371,7 @@ export default {
         changeMState(name, state) {
             for (let i = 0; i < this.machines.length; i++) {
                 if (this.machines[i].name == name) {
-                    this.machines[i].body.state = state;
+                    this.machines[i].state = state;
                 }
             }
         },
