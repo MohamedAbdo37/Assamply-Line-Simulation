@@ -81,6 +81,21 @@ public class AssemblerLine {
         }
     }
 
+    public void clear() {
+        //sys.stopInput();
+        for(Machine m : Ms) {
+            m.stopWork(true);
+            Ms.remove(m);
+        }
+        Qs.clear();
+    }
+
+    public void suspend() {
+        for(Machine m : this.Ms) {
+            m.suspend();
+        }
+    }
+
     public static void main(String[] args) {
         AssemblerLine ass = new AssemblerLine();
         ass.Ms.add(new Machine("M1", ass));
@@ -113,5 +128,15 @@ public class AssemblerLine {
 
         ass.startLine("Q0");
 
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        ass.clear();
+        for (Queue queue : ass.Qs) {
+            System.out.print(queue.size() + " ");
+        }
+        System.out.println();
     }
 }
