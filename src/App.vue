@@ -2,9 +2,9 @@
   <div>
     <ProgramHeader @mColor="this.mColor = $event" @qColor="this.qColor = $event"></ProgramHeader>
     <ProgramCanvas :machine=Ms :queue=Qs :mColor=mColor :qColor=qColor :clear=clear :relation=createR
-      @lineDone="this.createR = $event" :mStatues=mList :qStatues=qList ></ProgramCanvas>
+      @lineDone="this.createR = $event" :snap=screen :start=play ></ProgramCanvas>
     <ProgramControl :m=Ms :q=Qs @mChange="this.Ms = $event" @qChange="this.Qs = $event" @clear="this.clear = $event"
-      @addR="this.createR = $event" @machinesList="this.mList = $event" @queuesList="this.qList = $event">
+      @addR="this.createR = $event" @play="this.play = $event" @snap="this.screen = $event">
     </ProgramControl>
     <ProgramInformation></ProgramInformation>
   </div>
@@ -34,6 +34,8 @@ export default {
       createR: false,
       mList: [],
       qList: [],
+      screen: false,
+      play:false
     }
   },
   mounted() {

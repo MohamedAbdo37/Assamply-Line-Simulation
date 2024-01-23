@@ -12,6 +12,7 @@
                 <v-group v-for="item in machines" :key="item.id" :config="item">
                     <v-circle :config="item.body" />
                     <v-text :config="item.text" />
+                    <v-text :config="item.state" />
                 </v-group>
 
                 <v-arrow v-for="item in relations" :key="item.id" :config="item" />
@@ -36,9 +37,28 @@ export default {
             localMousePos: { x: undefined, y: undefined },
             selectedShapeID: "",
             line: false,
+            snapshots: [],
+            state: 0,
+            qState: null,
+            mState: null,
+            stateInterval: null,
+            mReady: {
+                text: "Ready",
+                fontSize: 15,
+                x: 0,
+                y: 55,
+                fill: "white"
+            },
+            mOnging: {
+                text: "ongoing",
+                fontSize: 15,
+                x: -5,
+                y: 55,
+                fill: "white"
+            }
         }
     },
-    props: ['machine', 'queue', 'mColor', 'qColor', 'clear', 'relation', 'mStatues', 'qStatues'],
+    props: ['machine', 'queue', 'mColor', 'qColor', 'clear', 'relation', 'snap', 'start'],
     watch: {
         machine() {
             this.createM(this.machine);
@@ -75,16 +95,54 @@ export default {
                 this.$emit('lineDone', false)
             });
         },
-        qStatues(){
-            // this.qStatues.forEach(q => {
-            //     this.resetQueue(q.name, q.size);
-            // })
+        qState() {
+            this.qState.forEach(q => {
+                this.resetQueue(q.name, q.size);
+            })
         },
-        // mStatues(){
-        //     this.mStatues.forEach(q => {
-        //         this.resetQueue(q.name, q.size);
-        //     })
-        // }
+        snap() {
+            if (this.snap === true) {
+                this.state = 0;
+                this.stateInterval = setInterval(() => {
+                    this.qState = this.snapshots[this.state].Qs;
+                    this.mState = this.snapshots[this.state].Ms;
+                    this.state++;
+                    if (this.state === (this.snapshots.length - 1)) {
+                        clearInterval(this.stateInterval);
+                    }
+                }, 500);
+
+            }
+        },
+        mState() {
+            this.mState.forEach(m => {
+                this.changeMColor(m.name, m.color);
+                if (m.ready === true) {
+                    this.changeMState(m.name, this.ready);
+                    this.flash(m.name);
+                }
+                else
+                    this.changeMState(m.name, this.ready);
+            })
+        },
+        start() {
+            if (this.start === true) {
+                this.state = setInterval(async () => {
+                    await fetch("http://localhost:8081/screen", {
+                        method: 'GET',
+                    })
+                        .then(r => {
+                            this.qState = r.Qs;
+                            this.mState = r.Ms;
+                            this.snapshots.push(r);
+                            this.state++;
+                        })
+                }, 500);
+            }else{
+                clearInterval(this.state)
+                this.state = null
+            }
+        }
     },
     methods: {
         d() {
@@ -151,13 +209,13 @@ export default {
                 text: mName,
                 fontSize: 20,
                 x: 8,
-                y: 42,
+                y: 32,
                 fill: "white"
             }
 
             const mBody = {
                 name: mName,
-                radius: 25,
+                radius: 35,
                 x: 20,
                 y: 50,
                 fill: this.mColor
@@ -166,15 +224,17 @@ export default {
             const group = {
                 name: mName,
                 text: mText,
+                state: this.mReady,
                 body: mBody,
                 x: 20,
                 y: 50,
                 draggable: true
             }
-            await fetch(`http://localhost:8081/AddMs?machineId=${group.name}`,{
+            await fetch(`http://localhost:8081/AddMs?machineId=${group.name}`, {
                 method: 'GET',
             })
             this.machines.push(group);
+            this.flash(mName)
         },
         async createQ(q) {
             let qName = "Q" + String(q);
@@ -246,9 +306,9 @@ export default {
 
                 document.querySelector(".canvas").addEventListener("click", () => {
                     n = n + 1;
-                    if(n===1)
+                    if (n === 1)
                         from = this.selectedShapeID;
-                    if(n===2)
+                    if (n === 2)
                         to = this.selectedShapeID;
                     console.log(this.localMousePos);
                     if (R) {
@@ -275,18 +335,34 @@ export default {
         flash(name) {
             this.machines.forEach(m => {
                 if (m.name === name) {
-                    m.body.fill = 'white';
+
                     setTimeout(() => {
                         m.body.fill = this.mColor;
                     }, 200);
+                    setTimeout(() => {
+                        m.body.fill = "#78BFDD";
+                    }, 50);
+                    setTimeout(() => {
+                        m.body.fill = "#FFFFFF";
+                    }, 100);
+                    setTimeout(() => {
+                        m.body.fill = "#78BFDD";
+                    }, 150);
 
                 }
             })
         },
-        changeMC(name, color) {
+        changeMColor(name, color) {
             for (let i = 0; i < this.machines.length; i++) {
                 if (this.machines[i].name == name) {
-                    this.machines[i].body.fill = color
+                    this.machines[i].body.fill = color;
+                }
+            }
+        },
+        changeMState(name, state) {
+            for (let i = 0; i < this.machines.length; i++) {
+                if (this.machines[i].name == name) {
+                    this.machines[i].body.state = state;
                 }
             }
         },
@@ -354,6 +430,7 @@ export default {
     height: 400px;
     margin: 10px;
     z-index: 0;
+    overflow: scroll;
 }
 
 #stage {

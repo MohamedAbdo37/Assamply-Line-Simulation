@@ -23,6 +23,7 @@ export default {
             queue: this.q,
             start: false,
             playID: undefined,
+            switchPlay: true
         }
     },
     methods: {
@@ -42,27 +43,36 @@ export default {
             await fetch(`http://localhost:8081/play?initialQueue=Q0`, {
                 method: "GET",
             }).then(() => this.start = true)
+            this.switchPlay = false
         },
         async replay() {
             // await fetch(`http://localhost:8081/replay`, {
             //     method: "GET",
             // })
+            this.$emit('snap', true)
+            this.switchPlay = false
         },
         addM() {
-            ++this.machine
-            this.$emit('mChange', this.machine);
-            this.$emit('clear', false);
-            // this.$emit('addR', FontFaceSetLoadEvent);
+            if (this.switchPlay) {
+                ++this.machine
+                this.$emit('mChange', this.machine);
+                this.$emit('clear', false);
+                // this.$emit('addR', FontFaceSetLoadEvent);
+            }
         },
         addQ() {
-            ++this.queue
-            this.$emit('qChange', this.queue);
-            this.$emit('clear', false);
-            this.$emit('addR', false);
+            if (this.switchPlay) {
+                ++this.queue
+                this.$emit('qChange', this.queue);
+                this.$emit('clear', false);
+                this.$emit('addR', false);
+            }
         },
         addR() {
-            this.$emit('addR', true);
-            this.$emit('clear', false);
+            if (this.switchPlay) {
+                this.$emit('addR', true);
+                this.$emit('clear', false);
+            }
         }, clear() {
             this.machine = -1
             this.queue = 0
@@ -70,7 +80,7 @@ export default {
             this.$emit('qChange', this.queue);
             this.$emit('addR', false);
             this.$emit('clear', true);
-
+            this.switchPlay = true;
         },
         async fetchMachinesStatus() {
             let list = await fetch("http://localhost:8081/getMachineStatus", {
@@ -96,8 +106,7 @@ export default {
             if (this.start === true) {
                 console.log(this.start);
                 this.playID = setInterval(async () => {
-                    // this.$emit("machinesList", this.fetchMachinesStatus());
-                    this.$emit("queuesList", this.fetchQueuesStatus());
+                    this.$emit("play", true);
                 }, 15000);
             }
             else {
@@ -144,4 +153,5 @@ button:active {
 img {
     width: 20px;
     height: 20px;
-}</style>
+}
+</style>
