@@ -107,7 +107,7 @@ export default {
                 console.log(this.start);
                 this.playID = setInterval(async () => {
                     this.$emit("play", true);
-                }, 15000);
+                }, 500);
             }
             else {
                 console.log(this.start);
