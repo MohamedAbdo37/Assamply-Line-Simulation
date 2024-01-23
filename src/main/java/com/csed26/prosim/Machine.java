@@ -48,11 +48,7 @@ public class Machine {
     }
 
     public String getColor() {
-        if (item != null) {
-            return item.getColor();
-        }
-        else
-            return null;
+        return this.color;
     }
      public void setItem(Item item) {
         this.item = item;
@@ -75,6 +71,7 @@ public class Machine {
 
                             //System.out.println(preQueue.size() + " " + getName());
                             setItem(preQueue.dequeue(getAssemblerLine()));
+                            color = item.getColor();
                             lock = true;
                             preQueue.wait();
                         }
