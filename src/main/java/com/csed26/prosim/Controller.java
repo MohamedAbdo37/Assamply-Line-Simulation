@@ -41,9 +41,33 @@ public class Controller {
         return lines;
     }
 
+    @GetMapping("/Ms")
+    public ArrayList<M> getMs() {
+        ArrayList<Machine> Ms = new ArrayList<>();
+        careTaker.undo(careTaker.GetSize() - 1);    
+        Ms = careTaker.Generatee.getAssembler().getMs();
+        ArrayList<M> ms = new ArrayList<>();
+        for (Machine M : Ms) {
+            ms.add(new M(M.getName(), M.getColor(), M.getServiceTime()));
+        }
+        return ms;
+    }
+
+    @GetMapping("/Qs")
+    public ArrayList<Q> getQs() {
+        ArrayList<Queue> Qs = new ArrayList<>();
+        careTaker.undo(careTaker.GetSize() - 1);    
+        Qs = careTaker.Generatee.getAssembler().getQs();
+        ArrayList<Q> qs = new ArrayList<>();
+        for (Queue q : Qs) {
+            qs.add(new Q(q.getName(), q.getSize()));
+        }
+        return qs;
+    }
+
     @GetMapping("/connect")
     public void connect(@RequestParam String from, @RequestParam String to) {
-        if(from.contains("M"))
+        if (from.contains("M"))
             ass.connectMQ(from, to);
         else
             ass.connectQM(to, from);
