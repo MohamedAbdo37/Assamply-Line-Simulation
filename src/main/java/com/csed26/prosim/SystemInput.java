@@ -16,7 +16,8 @@ public class SystemInput {
         @Override
         public void run() {
             while (!mainThread.isInterrupted()) {
-                //synchronized (this) {
+
+                synchronized (this) {
                     try {
                         Item item = new Item(randomHexGenerate());
                         mainQueue.enqueue(item, getAssemblerLine());
@@ -27,8 +28,9 @@ public class SystemInput {
                         System.out.println();
                     } catch (Exception e) {
                         e.printStackTrace();
+                        mainThread.interrupt();
                     }
-                //}
+                }
             }
         }
     });
@@ -36,6 +38,11 @@ public class SystemInput {
     public void play() {
         mainThread.start();
     }
+    public void stopInput() {
+        mainThread.interrupt();
+    }
+
+
     public String randomHexGenerate() {
         String letters = "0123456789ABCDEF";
         String color = "#";

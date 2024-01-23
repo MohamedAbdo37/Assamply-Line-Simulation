@@ -1,18 +1,23 @@
 package com.csed26.prosim;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Machine {
     private AssemblerLine assemblerLine;
+
     private String name;
     private Queue postQueue;
-    private Queue preQueue;
+    private List<Queue> preQueues;
     private Manager manager;
     private long serviceTime;
     private Item item;
     private Thread consumerThread;
     private Thread producerThread;
 
+    private boolean stop = false;
     private String color;
 
     private boolean lock = false;
@@ -23,6 +28,7 @@ public class Machine {
         this.name = name;
         this.serviceTime = (int) (randomgenerate() * 1000);
         this.manager = Manager.getInstance();
+        this.preQueues = new ArrayList<>();
         manager.addObserver(this.name, new MachineObserver(this.name));
         System.out.println(this.serviceTime);
     }
@@ -36,7 +42,7 @@ public class Machine {
     }
 
     public void setPreQueues(Queue preQueue) {
-        this.preQueue = preQueue;
+        this.preQueues.add(preQueue);
         System.out.println("done assigning prequeue");
     }
 
@@ -48,11 +54,7 @@ public class Machine {
     }
 
     public String getColor() {
-        if (item != null) {
-            return item.getColor();
-        }
-        else
-            return null;
+        return this.color;
     }
      public void setItem(Item item) {
         this.item = item;
@@ -63,10 +65,14 @@ public class Machine {
     }
 
     public void startWork() {
+        stop = false;
         consumerThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (!consumerThread.isInterrupted()) {
+                    //System.out.println(getName() +preQueues.size());
+                    Queue preQueue = preQueues.remove(0);
+                    preQueues.add(preQueue);
                     synchronized (preQueue) {
                         try {
                             while (preQueue.isEmpty()) {
@@ -75,6 +81,7 @@ public class Machine {
 
                             //System.out.println(preQueue.size() + " " + getName());
                             setItem(preQueue.dequeue(getAssemblerLine()));
+                            color = item.getColor();
                             lock = true;
                             preQueue.wait();
                         }
@@ -82,13 +89,20 @@ public class Machine {
                             e.printStackTrace();
                         }
                     }
+
+                    if(stop) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
             }
         });
         producerThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (!consumerThread.isInterrupted()) {
+                while (!producerThread.isInterrupted()) {
+                    //System.out.println(getName() +preQueues.size());
+                    Queue preQueue = preQueues.remove(0);
+                    preQueues.add(preQueue);
                     synchronized (preQueue) {
                         try {
                             while (lock && item != null) {
@@ -103,6 +117,10 @@ public class Machine {
                             e.printStackTrace();
                         }
                     }
+                    if(stop) {
+                        Thread.currentThread().interrupt();
+                    }
+                        //producerThread.interrupt();
                 }
             }
         });
@@ -110,8 +128,17 @@ public class Machine {
         producerThread.start();
     }
 
+    public void stopWork(boolean interrupt) {
+        stop = true;
+    }
+
     private double randomgenerate() {
         double random = 1 + Math. random() * (5 - 1);
         return random;
+    }
+
+    public void suspend() {
+//        consumerThread.suspend();
+//        producerThread.suspend();
     }
 }
