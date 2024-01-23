@@ -22,7 +22,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 export default {
     name: 'ProgramCanvas',
     data() {
@@ -37,7 +37,8 @@ export default {
             localMousePos: { x: undefined, y: undefined },
             selectedShapeID: "",
             line: false,
-            snapshots: [],
+            snapshotsQ: [],
+            snapshotsM: [],
             state: 0,
             qState: null,
             mState: null,
@@ -104,8 +105,8 @@ export default {
             if (this.snap === true) {
                 this.state = 0;
                 this.stateInterval = setInterval(() => {
-                    this.qState = this.snapshots[this.state].Qs;
-                    this.mState = this.snapshots[this.state].Ms;
+                    this.qState = this.snapshotsQ[this.state];
+                    this.mState = this.snapshotsM[this.state];
                     this.state++;
                     if (this.state === (this.snapshots.length - 1)) {
                         clearInterval(this.stateInterval);
@@ -116,29 +117,32 @@ export default {
         },
         mState() {
             this.mState.forEach(m => {
-                this.changeMColor(m.name, m.color);
-                if (m.ready === true) {
-                    this.changeMState(m.name, this.ready);
+                
+                if (m.color !== null) {
+                    this.mOnging.text = String(m.state)
+                    this.changeMState(m.name, this.mOnging);
                     this.flash(m.name);
                 }
                 else
-                    this.changeMState(m.name, this.ready);
+                    this.changeMState(m.name, this.mReady);
             })
         },
         start() {
             if (this.start === true) {
                 this.state = setInterval(async () => {
-                    await fetch("http://localhost:8081/screen", {
-                        method: 'GET',
+                    axios.get("http://localhost:8081/Qs").then(r => {
+                        this.qState = r.data;
+                        console.log(r.data)
+                        this.snapshotsQ.push(r.data);
                     })
-                        .then(r => {
-                            this.qState = r.Qs;
-                            this.mState = r.Ms;
-                            this.snapshots.push(r);
-                            this.state++;
-                        })
+                    axios.get("http://localhost:8081/Ms").then(r => {
+                        this.mState = r.data;
+                        this.snapshotsM.push(r.data);
+                        console.log(r.data)
+                    })
+                    this.state++;
                 }, 500);
-            }else{
+            } else {
                 clearInterval(this.state)
                 this.state = null
             }
